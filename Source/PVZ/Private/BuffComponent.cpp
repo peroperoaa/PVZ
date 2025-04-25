@@ -9,6 +9,14 @@ UBuffComponent::UBuffComponent()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
+	ExtraMaxHealth = 0.f;
+	ExtraAttack = 0.f;
+	AttackRate = 0.f;
+	ExtraDefense = 0.f;
+	AttackSpeedRate = 1.f;
+	DamageReductionRate = 0.f;
+	ExtraCritRate = 0.f;
+	ExtraCritDamage = 0.f;
 	// ...
 }
 
@@ -29,5 +37,14 @@ void UBuffComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
+}
+
+void UBuffComponent::CalculateBuffValue()
+{
+}
+
+float UBuffComponent::CalculateAttackValue(float BaseAttack)
+{
+	return 0.0f;
 }
 

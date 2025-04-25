@@ -24,5 +24,21 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-		
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float BaseMaxHealth;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float BaseAttack;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float BaseDefense;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float BaseAttackInterval;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float BaseCritRate;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float BaseCritDamage;
 };
