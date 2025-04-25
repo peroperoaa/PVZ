@@ -3,3 +3,17 @@
 
 #include "TypicalPlantAttackComponent.h"
 
+UTypicalPlantAttackComponent::UTypicalPlantAttackComponent()
+{
+
+}
+
+void UTypicalPlantAttackComponent::OnTryAttack()
+{
+
+}
+
+void UTypicalPlantAttackComponent::Attack()
+{
+
+}

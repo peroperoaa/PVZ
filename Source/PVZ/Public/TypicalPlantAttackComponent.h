@@ -13,5 +13,12 @@ UCLASS()
 class PVZ_API UTypicalPlantAttackComponent : public UPlantAttackBaseComponent
 {
 	GENERATED_BODY()
-	
+
+public:
+	UTypicalPlantAttackComponent();
+
+	virtual void OnTryAttack() override;
+
+	virtual void Attack() override;
+
 };

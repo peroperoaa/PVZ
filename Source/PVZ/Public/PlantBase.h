@@ -13,6 +13,7 @@ class UPlantHealthBaseComponent;
 class UPlantAttackBaseComponent;
 class UPaperSpriteComponent;
 
+//PlantBase类型没有用CreatDefaultSubobject给UStateComponent和UPlantHealthBaseComponent和UPlantAttackBaseComponent赋值，为nullptr，子类中请赋值
 UCLASS(Abstract)
 class PVZ_API APlantBase : public AActor
 {
@@ -43,8 +44,24 @@ public:
 	UPlantAttackBaseComponent* AttackComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UPaperSpriteComponent* SpriteComponent;
+	UPaperSpriteComponent* PaperSpriteComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	int32 PlantID;
+
+	//计算受到伤害
+	UFUNCTION(BlueprintCallable)
+	virtual float CalculateOutgoingDamage(float Damage);
+
+	//计算对僵尸伤害
+	UFUNCTION(BlueprintCallable)
+	virtual float CalculateReceiveDamage(float Damage);
+
+	//获取当前最大生命值，异常则返回-1
+	UFUNCTION(BlueprintCallable)
+	float GetCurrentMaxHealth();
+
+	//获取当前攻击冷却时间，异常则返回-1
+	UFUNCTION(BlueprintCallable)
+	float GetCurrentAttackInterval();
 };

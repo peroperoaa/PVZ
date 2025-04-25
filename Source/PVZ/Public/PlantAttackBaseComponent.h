@@ -6,7 +6,10 @@
 #include "Components/ActorComponent.h"
 #include "PlantAttackBaseComponent.generated.h"
 
+class UStateComponent;
+class UBuffComponent;
 
+//植物攻击组件基类，其中成员变量均未初始化，请在子类中初始化，并实现其中的OnTryAttack和Attack函数
 UCLASS(Abstract, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class PVZ_API UPlantAttackBaseComponent : public UActorComponent
 {
@@ -29,9 +32,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float CalculatedAttackInterval;
 
+	//判断是否能攻击
 	UFUNCTION(BlueprintCallable)
 	virtual void OnTryAttack() PURE_VIRTUAL(UPlantAttackBaseComponent::OnTryAttack,);
 
+	//攻击
 	UFUNCTION(BlueprintCallable)
-	virtual void Attack() PURE_VIRTUAL(UPlantAttackBaseComponent::OnTryAttack,);
+	virtual void Attack() PURE_VIRTUAL(UPlantAttackBaseComponent::Attack,);
 };

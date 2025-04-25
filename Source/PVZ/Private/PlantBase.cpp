@@ -2,6 +2,7 @@
 
 
 #include "PlantBase.h"
+#include "BuffComponent.h"
 
 // Sets default values
 APlantBase::APlantBase()
@@ -9,10 +10,10 @@ APlantBase::APlantBase()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	StateComponent = nullptr;
-	BuffComponent = nullptr;
+	BuffComponent = CreateDefaultSubobject<UBuffComponent>(TEXT("BuffComponent"));
 	HealthComponent = nullptr;
 	AttackComponent = nullptr;
-	SpriteComponent = nullptr;
+	PaperSpriteComponent = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("PaperSpriteComponent"));
 	PlantID = 0;
 }
 
@@ -28,5 +29,45 @@ void APlantBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+float APlantBase::CalculateOutgoingDamage(float Damage)
+{
+	if (!BuffComponent || !StateComponent)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("APlantBase::CalculateOutgoingDamage : BuffComponent or StateComponent is null"));
+		return Damage;
+	}
+	return BuffComponent->CalculateOutgoingDamage(Damage, StateComponent);
+}
+
+float APlantBase::CalculateReceiveDamage(float Damage)
+{
+	if (!BuffComponent || !StateComponent)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("APlantBase::CalculateReceiveDamage : BuffComponent or StateComponent is null"));
+		return Damage;
+	}
+	return BuffComponent->CalculateReceiveDamage(Damage, StateComponent);
+}
+
+float APlantBase::GetCurrentMaxHealth()
+{
+	if (!BuffComponent || !StateComponent)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("APlantBase::GetCurrentMaxHealth : BuffComponent or StateComponent is null"));
+		return -1;
+	}
+	return BuffComponent->GetCurrentMaxHealth(StateComponent);
+}
+
+float APlantBase::GetCurrentAttackInterval()
+{
+	if (!BuffComponent || !StateComponent)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("APlantBase::GetCurrentAttackInterval : BuffComponent or StateComponent is null"));
+		return -1;
+	}
+	return BuffComponent->GetCurrentAttackInterval(StateComponent);
 }
 

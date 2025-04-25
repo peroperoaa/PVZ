@@ -2,6 +2,8 @@
 
 
 #include "BuffComponent.h"
+#include "StateComponent.h"
+
 
 // Sets default values for this component's properties
 UBuffComponent::UBuffComponent()
@@ -41,10 +43,60 @@ void UBuffComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 
 void UBuffComponent::CalculateBuffValue()
 {
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("UBuffComponent::CalculateBuffValue : 计算Buff组件数值"));
 }
 
-float UBuffComponent::CalculateAttackValue(float BaseAttack)
+float UBuffComponent::CalculateOutgoingDamage(float Damage, UStateComponent* SelfStateComponent)
 {
-	return 0.0f;
+	if (!SelfStateComponent)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("UBuffComponent::CalculateOutgoingDamage : SelfStateComponent is null"));
+		return Damage;
+	}
+	float FinalAttack = (Damage + ExtraAttack) * (1 + AttackRate);
+	float TotalCritRate = SelfStateComponent->BaseCritRate + ExtraCritRate;
+	float FinalCritRate = FMath::Clamp(TotalCritRate, 0.f, 1.f);
+	float FinalCritDamage = SelfStateComponent->BaseCritDamage + ExtraCritDamage;
+	bool bIsCrit = FMath::FRand() < FinalCritRate;
+	float FinalDamage = 0.f;
+	if (bIsCrit)
+		FinalDamage = FinalAttack * (1 + FinalCritDamage);
+	else 
+		FinalDamage = FinalAttack;
+	return FinalAttack;
+}
+
+//防御力减伤公式为x/(x + 600)，其中x为防御力
+float UBuffComponent::CalculateReceiveDamage(float Damage, UStateComponent* SelfStateComponent)
+{
+	if (!SelfStateComponent)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("UBuffComponent::CalculateReceiveDamage : SelfStateComponent is null"));
+		return Damage;
+	}
+	float FinalDefense = SelfStateComponent->BaseDefense + ExtraDefense;
+	float AfterDefenseCalculatedDamage = Damage * (1 - FinalDefense / (FinalDefense + 600));
+	float FinalDamage = AfterDefenseCalculatedDamage * (1 - FMath::Clamp(DamageReductionRate, 0.f, 1.f));
+	return FinalDamage;
+}
+
+float UBuffComponent::GetCurrentMaxHealth(UStateComponent* SelfStateComponent)
+{
+	if (!SelfStateComponent)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("UBuffComponent::GetCurrentMaxHealth : SelfStateComponent is null"));
+		return -1;
+	}
+	return SelfStateComponent->BaseMaxHealth + ExtraMaxHealth;
+}
+
+float UBuffComponent::GetCurrentAttackInterval(UStateComponent* SelfStateComponent)
+{
+	if (!SelfStateComponent)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("UBuffComponent::GetCurrentAttackInterval : SelfStateComponent is null"));
+		return -1;
+	}
+	return SelfStateComponent->BaseAttackInterval / AttackSpeedRate;
 }
 

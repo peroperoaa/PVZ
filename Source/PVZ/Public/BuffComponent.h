@@ -24,7 +24,7 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	//额外攻击力数值加成
+	//额外最大生命值加成
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float ExtraMaxHealth;
 
@@ -56,13 +56,23 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float ExtraCritDamage;
 
-	//计算Buff数值
+	//计算Buff组件数值
 	UFUNCTION(BlueprintCallable)
 	void CalculateBuffValue();
-
-	//计算伤害数值
+	
+	//计算受到伤害,一般由PlantBase调用，异常返回Damage
 	UFUNCTION(BlueprintCallable)
-	float CalculateAttackValue(float BaseAttack);
+	float CalculateOutgoingDamage(float Damage, UStateComponent* SelfStateComponent);
 
+	//计算伤害数值，一般由PlantBase调用，异常返回Damage
+	UFUNCTION(BlueprintCallable)
+	float CalculateReceiveDamage(float Damage, UStateComponent* SelfStateComponent);
 
+	//获取当前最大生命值，异常则返回-1
+	UFUNCTION(BlueprintCallable)
+	float GetCurrentMaxHealth(UStateComponent* SelfStateComponent);
+
+	//获取当前攻击冷却时间，异常则返回-1
+	UFUNCTION(BlueprintCallable)
+	float GetCurrentAttackInterval(UStateComponent* SelfStateComponent);
 };
