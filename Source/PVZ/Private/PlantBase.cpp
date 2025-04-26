@@ -3,17 +3,18 @@
 
 #include "PlantBase.h"
 #include "BuffComponent.h"
+#include "StateComponent.h"
+#include "PlantHealthBaseComponent.h"
 
 // Sets default values
 APlantBase::APlantBase()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	StateComponent = nullptr;
 	BuffComponent = CreateDefaultSubobject<UBuffComponent>(TEXT("BuffComponent"));
-	HealthComponent = nullptr;
-	AttackComponent = nullptr;
 	PaperSpriteComponent = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("PaperSpriteComponent"));
+	HealthComponent = CreateDefaultSubobject<UPlantHealthBaseComponent>(TEXT("HealthComponent"));
+	StateComponent = CreateDefaultSubobject<UStateComponent>(TEXT("StateComponent"));
 	PlantID = 0;
 }
 
@@ -29,6 +30,25 @@ void APlantBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+bool APlantBase::Init()
+{
+	if (StateComponent)
+	{
+		if(StateComponent->Init(PlantID))
+			return HealthComponent->Init(StateComponent);
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("APlantBase::Init : StateComponent Init failed"));
+			return false;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("APlantBase::Init : StateComponent is null"));
+		return false;
+	}
 }
 
 float APlantBase::CalculateOutgoingDamage(float Damage)

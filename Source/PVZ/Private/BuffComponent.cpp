@@ -66,7 +66,6 @@ float UBuffComponent::CalculateOutgoingDamage(float Damage, UStateComponent* Sel
 	return FinalAttack;
 }
 
-//防御力减伤公式为x/(x + 600)，其中x为防御力
 float UBuffComponent::CalculateReceiveDamage(float Damage, UStateComponent* SelfStateComponent)
 {
 	if (!SelfStateComponent)

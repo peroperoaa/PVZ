@@ -2,6 +2,7 @@
 
 
 #include "StateComponent.h"
+#include "Engine.h"
 
 // Sets default values for this component's properties
 UStateComponent::UStateComponent()
@@ -35,5 +36,12 @@ void UStateComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
+}
+
+bool UStateComponent::Init(int32 SelfPlantID)
+{
+	if(GEngine)
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("UStateComponent::Init : 通过%d读取基础属性"), SelfPlantID));
+	return true;
 }
 

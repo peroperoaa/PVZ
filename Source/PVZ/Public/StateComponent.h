@@ -41,4 +41,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float BaseCritDamage;
+
+	//用于读取基础属性
+	bool Init(int32 SelfPlantID);
 };
