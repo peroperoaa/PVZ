@@ -82,6 +82,17 @@ void UPlantHealthBaseComponent::AddHealth(float Value)
 	CurrentHealth = FMath::Min(CurrentHealth + Value, CalculatedMaxHealth);
 }
 
+void UPlantHealthBaseComponent::AddHealthPercent(float Rate)
+{
+	if (Rate < 0)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("UPlantHealthBaseComponent::AddHealthPercent : Rate is less than 0"));
+		return;
+	}
+	CurrentHealth = FMath::Min(CurrentHealth + Rate * CalculatedMaxHealth, CalculatedMaxHealth);
+}
+
+
 bool UPlantHealthBaseComponent::Init(UStateComponent* SelfStateComponent)
 {
 	if (!SelfStateComponent)

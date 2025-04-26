@@ -48,4 +48,8 @@ public:
 	//初始化Health组件，返回是否初始化成功
 	UFUNCTION(BlueprintCallable)
 	virtual bool Init(UStateComponent* SelfStateComponent);
+
+	//回复生命值百分比
+	UFUNCTION(BlueprintCallable)
+	virtual void AddHealthPercent(float Rate);
 };

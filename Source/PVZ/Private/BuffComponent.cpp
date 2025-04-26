@@ -99,3 +99,8 @@ float UBuffComponent::GetCurrentAttackInterval(UStateComponent* SelfStateCompone
 	return SelfStateComponent->BaseAttackInterval / AttackSpeedRate;
 }
 
+void UBuffComponent::AddBuff()
+{
+	UE_LOG(LogTemp, Warning, TEXT("UBuffComponent::AddBuff : Buff×é¼þÌí¼ÓBuff"));
+}
+

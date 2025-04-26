@@ -61,33 +61,62 @@ float APlantBase::CalculateOutgoingDamage(float Damage)
 	return BuffComponent->CalculateOutgoingDamage(Damage, StateComponent);
 }
 
-float APlantBase::CalculateReceiveDamage(float Damage)
+void APlantBase::BeAttacked(float Damage)
 {
+	float FinalDamage = Damage;
 	if (!BuffComponent || !StateComponent)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("APlantBase::CalculateReceiveDamage : BuffComponent or StateComponent is null"));
-		return Damage;
+		UE_LOG(LogTemp, Warning, TEXT("APlantBase::CalculateReceiveDamage : BuffComponent or StateComponent is null"))
 	}
-	return BuffComponent->CalculateReceiveDamage(Damage, StateComponent);
+	else
+		FinalDamage = BuffComponent->CalculateReceiveDamage(Damage, StateComponent);
+	if (!HealthComponent)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("APlantBase::BeAttacked : HealthComponent is null"));
+		return;
+	}
+	HealthComponent->BeAttacked(FinalDamage);
 }
 
-float APlantBase::GetCurrentMaxHealth()
+void APlantBase::AddBuff()
 {
-	if (!BuffComponent || !StateComponent)
+	if (!BuffComponent)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("APlantBase::GetCurrentMaxHealth : BuffComponent or StateComponent is null"));
-		return -1;
+		UE_LOG(LogTemp, Warning, TEXT("APlantBase::AddBuff : BuffComponent is null"));
+		return;
 	}
-	return BuffComponent->GetCurrentMaxHealth(StateComponent);
+	BuffComponent->AddBuff();
+	if (!StateComponent || !HealthComponent)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("APlantBase::AddBuff : StateComponent or HealthComponent is null"));
+		return;
+	}
+	HealthComponent->SetCurrentMaxHealth(BuffComponent->GetCurrentMaxHealth(StateComponent));
 }
 
-float APlantBase::GetCurrentAttackInterval()
+void APlantBase::UpdateOtherComponents()
 {
-	if (!BuffComponent || !StateComponent)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("APlantBase::GetCurrentAttackInterval : BuffComponent or StateComponent is null"));
-		return -1;
-	}
-	return BuffComponent->GetCurrentAttackInterval(StateComponent);
+
 }
+
+void APlantBase::AddHealth(float Value)
+{
+	if (!HealthComponent)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("APlantBase::AddHealth : HealthComponent is null"));
+		return;
+	}
+	HealthComponent->AddHealth(Value);
+}
+
+void APlantBase::AddHealthPercent(float Rate)
+{
+	if (!HealthComponent)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("APlantBase::AddHealthPercent : HealthComponent is null"));
+		return;
+	}
+	HealthComponent->AddHealthPercent(Rate);
+}
+
 

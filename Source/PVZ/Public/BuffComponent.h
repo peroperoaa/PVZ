@@ -59,12 +59,12 @@ public:
 	//计算Buff组件数值
 	UFUNCTION(BlueprintCallable)
 	void CalculateBuffValue();
-	
-	//计算受到伤害,一般由PlantBase调用，异常返回Damage,防御力减伤公式为x/(x + 600)，其中x为防御力
+
+	//计算伤害数值，一般由PlantBase调用，异常返回Damage
 	UFUNCTION(BlueprintCallable)
 	virtual float CalculateOutgoingDamage(float Damage, UStateComponent* SelfStateComponent);
 
-	//计算伤害数值，一般由PlantBase调用，异常返回Damage
+	//计算受到伤害,一般由PlantBase调用，异常返回Damage,防御力减伤公式为x/(x + 600)，其中x为防御力
 	UFUNCTION(BlueprintCallable)
 	virtual float CalculateReceiveDamage(float Damage, UStateComponent* SelfStateComponent);
 
@@ -75,4 +75,8 @@ public:
 	//获取当前攻击冷却时间，异常则返回-1
 	UFUNCTION(BlueprintCallable)
 	virtual float GetCurrentAttackInterval(UStateComponent* SelfStateComponent);
+
+	//传入奇物
+	UFUNCTION(BlueprintCallable)
+	virtual void AddBuff();
 };

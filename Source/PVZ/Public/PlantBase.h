@@ -64,26 +64,40 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual bool Init();
 
+	//扣除生命值，传入伤害值
+	UFUNCTION(BlueprintCallable)
+	virtual void BeAttacked(float Damage);
+
+	//死亡逻辑
 	UFUNCTION(BlueprintCallable)
 	virtual void Dead() PURE_VIRTUAL(APlantBase::Dead, );
+	
+	//添加奇物
+	UFUNCTION(BlueprintCallable)
+	virtual void AddBuff();
+
+	//该函数会在AddBuff（添加奇物）中被调用，用于实现需要实时同步Buff组件中数值的新增组件的逻辑时重写(如attack组件中存储的实时攻击力需在此处更新，代码可参考AddBuff)
+	UFUNCTION(BlueprintCallable)
+	virtual void UpdateOtherComponents();
 
 	/*
 		封装自BuffComponent的函数
 	*/
 
-	//计算受到伤害
+	//计算对僵尸伤害,传入原始伤害，返回经过计算的伤害
 	UFUNCTION(BlueprintCallable)
 	virtual float CalculateOutgoingDamage(float Damage);
 
-	//计算对僵尸伤害
-	UFUNCTION(BlueprintCallable)
-	virtual float CalculateReceiveDamage(float Damage);
+	/*
+		封装自PlantHealthBaseComponent的函数
+	*/
 
-	//获取当前最大生命值，异常则返回-1
+	//回复生命值，传入增加的生命值
 	UFUNCTION(BlueprintCallable)
-	virtual float GetCurrentMaxHealth();
+	virtual void AddHealth(float Value);
 
-	//获取当前攻击冷却时间，异常则返回-1
+	//回复生命值百分比
 	UFUNCTION(BlueprintCallable)
-	virtual float GetCurrentAttackInterval();
+	virtual void AddHealthPercent(float Rate);
+
 };
