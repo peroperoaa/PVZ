@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -9,7 +9,7 @@
 class UStateComponent;
 class UBuffComponent;
 
-//Ö²Îï¹¥»÷×é¼ş»ùÀà£¬ÆäÖĞ³ÉÔ±±äÁ¿¾ùÎ´³õÊ¼»¯£¬ÇëÔÚ×ÓÀàÖĞ³õÊ¼»¯£¬²¢ÊµÏÖÆäÖĞµÄOnTryAttackºÍAttackº¯Êı
+//æ¤ç‰©æ”»å‡»ç»„ä»¶åŸºç±»ï¼Œå…¶ä¸­æˆå‘˜å˜é‡å‡æœªåˆå§‹åŒ–ï¼Œè¯·åœ¨å­ç±»ä¸­åˆå§‹åŒ–ï¼Œå¹¶å®ç°å…¶ä¸­çš„OnTryAttackå’ŒAttackå‡½æ•°
 UCLASS(Abstract, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class PVZ_API UPlantAttackBaseComponent : public UActorComponent
 {
@@ -32,11 +32,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float CalculatedAttackInterval;
 
-	//ÅĞ¶ÏÊÇ·ñÄÜ¹¥»÷
+	//åˆ¤æ–­æ˜¯å¦èƒ½æ”»å‡»
 	UFUNCTION(BlueprintCallable)
 	virtual void OnTryAttack() PURE_VIRTUAL(UPlantAttackBaseComponent::OnTryAttack,);
 
-	//¹¥»÷
+	//æ”»å‡»
 	UFUNCTION(BlueprintCallable)
 	virtual void Attack() PURE_VIRTUAL(UPlantAttackBaseComponent::Attack,);
 };

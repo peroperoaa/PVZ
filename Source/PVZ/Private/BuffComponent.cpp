@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "BuffComponent.h"
@@ -43,7 +43,7 @@ void UBuffComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 
 void UBuffComponent::CalculateBuffValue()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("UBuffComponent::CalculateBuffValue : ¼ÆËãBuff×é¼þÊýÖµ"));
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("UBuffComponent::CalculateBuffValue : è®¡ç®—Buffç»„ä»¶æ•°å€¼"));
 }
 
 float UBuffComponent::CalculateOutgoingDamage(float Damage, UStateComponent* SelfStateComponent)
@@ -101,6 +101,6 @@ float UBuffComponent::GetCurrentAttackInterval(UStateComponent* SelfStateCompone
 
 void UBuffComponent::AddBuff()
 {
-	UE_LOG(LogTemp, Warning, TEXT("UBuffComponent::AddBuff : Buff×é¼þÌí¼ÓBuff"));
+	UE_LOG(LogTemp, Warning, TEXT("UBuffComponent::AddBuff : Buffç»„ä»¶æ·»åŠ Buff"));
 }
 

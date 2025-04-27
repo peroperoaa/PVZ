@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -25,31 +25,31 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	//µ±Ç°ÉúÃüÖµ
+	//å½“å‰ç”Ÿå‘½å€¼
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float CurrentHealth;
 
-	//¾­¹ı¼ÆËãºóµÄ×î´óÉúÃüÖµ
+	//ç»è¿‡è®¡ç®—åçš„æœ€å¤§ç”Ÿå‘½å€¼
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float CalculatedMaxHealth;
 
-	//¸üĞÂµ±Ç°×î´óÉúÃüÖµ
+	//æ›´æ–°å½“å‰æœ€å¤§ç”Ÿå‘½å€¼
 	UFUNCTION(BlueprintCallable)
 	virtual void SetCurrentMaxHealth(float NewMaxHealth);
 
-	//´¦Àí±»¹¥»÷¿ÛÑªÂß¼­£¬´«Èë×îÖÕÉËº¦Öµ
+	//å¤„ç†è¢«æ”»å‡»æ‰£è¡€é€»è¾‘ï¼Œä¼ å…¥æœ€ç»ˆä¼¤å®³å€¼
 	UFUNCTION(BlueprintCallable)
 	virtual void BeAttacked(float FinalDamage);
 
-	//»Ø¸´ÉúÃüÖµ£¬´«ÈëÔö¼ÓµÄÉúÃüÖµ
+	//å›å¤ç”Ÿå‘½å€¼ï¼Œä¼ å…¥å¢åŠ çš„ç”Ÿå‘½å€¼
 	UFUNCTION(BlueprintCallable)
 	virtual void AddHealth(float Value);
 
-	//³õÊ¼»¯Health×é¼ş£¬·µ»ØÊÇ·ñ³õÊ¼»¯³É¹¦
+	//åˆå§‹åŒ–Healthç»„ä»¶ï¼Œè¿”å›æ˜¯å¦åˆå§‹åŒ–æˆåŠŸ
 	UFUNCTION(BlueprintCallable)
 	virtual bool Init(UStateComponent* SelfStateComponent);
 
-	//»Ø¸´ÉúÃüÖµ°Ù·Ö±È
+	//å›å¤ç”Ÿå‘½å€¼ç™¾åˆ†æ¯”
 	UFUNCTION(BlueprintCallable)
 	virtual void AddHealthPercent(float Rate);
 };

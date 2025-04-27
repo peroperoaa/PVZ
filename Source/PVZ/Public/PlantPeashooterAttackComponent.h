@@ -4,44 +4,39 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "StateComponent.generated.h"
+#include "PlantPeashooterAttackComponent.generated.h"
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class PVZ_API UStateComponent : public UActorComponent
+class PVZ_API UPlantPeashooterAttackComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:	
 	// Sets default values for this component's properties
-	UStateComponent();
+	UPlantPeashooterAttackComponent();
 
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float BaseMaxHealth;
+	//攻击定时器
+	FTimerHandle AttackTimerHandle;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float BaseAttack;
+	//炮弹类型
+	TSubclassOf<AActor> AttackProjectileClass;
 
+	//攻击间隔
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float BaseDefense;
+	float AttackInterval;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float BaseAttackInterval;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float BaseCritRate;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float BaseCritDamage;
-
-	//用于读取基础属性
-	bool Init(int32 SelfPlantID);
+	//尝试攻击
+	UFUNCTION(BlueprintCallable)
+	void OnTryAttack();
 };

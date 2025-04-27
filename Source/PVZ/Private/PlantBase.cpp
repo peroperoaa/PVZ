@@ -1,9 +1,10 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "PlantBase.h"
 #include "BuffComponent.h"
 #include "StateComponent.h"
+#include "PaperFlipbookComponent.h"
 #include "PlantHealthBaseComponent.h"
 
 // Sets default values
@@ -12,9 +13,10 @@ APlantBase::APlantBase()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	BuffComponent = CreateDefaultSubobject<UBuffComponent>(TEXT("BuffComponent"));
-	PaperSpriteComponent = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("PaperSpriteComponent"));
+	SpriteComponent = CreateDefaultSubobject<UPaperFlipbookComponent>(TEXT("PaperSpriteComponent"));
 	HealthComponent = CreateDefaultSubobject<UPlantHealthBaseComponent>(TEXT("HealthComponent"));
 	StateComponent = CreateDefaultSubobject<UStateComponent>(TEXT("StateComponent"));
+	RootComponent = SpriteComponent;
 	PlantID = 0;
 }
 
@@ -94,7 +96,7 @@ void APlantBase::AddBuff()
 	HealthComponent->SetCurrentMaxHealth(BuffComponent->GetCurrentMaxHealth(StateComponent));
 }
 
-void APlantBase::UpdateOtherComponents()
+void APlantBase::BuffUpdateOtherComponents()
 {
 
 }
@@ -120,3 +122,12 @@ void APlantBase::AddHealthPercent(float Rate)
 }
 
 
+float APlantBase::GetCurrentAttackInterval()
+{
+	if (!BuffComponent || !StateComponent)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("APlantBase::GetCurrentAttackInterval : BuffComponent or StateComponent is null"));
+		return -1;
+	}
+	return BuffComponent->GetCurrentAttackInterval(StateComponent);
+}

@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "StateComponent.h"
@@ -41,7 +41,7 @@ void UStateComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 bool UStateComponent::Init(int32 SelfPlantID)
 {
 	if(GEngine)
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("UStateComponent::Init : Í¨¹ı%d¶ÁÈ¡»ù´¡ÊôĞÔ"), SelfPlantID));
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("UStateComponent::Init : é€šè¿‡%dè¯»å–åŸºç¡€å±æ€§"), SelfPlantID));
 	return true;
 }
 

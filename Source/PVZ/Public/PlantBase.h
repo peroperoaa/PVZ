@@ -1,19 +1,18 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "PaperSpriteComponent.h"
 #include "PlantBase.generated.h"
 
 class UStateComponent;
 class UBuffComponent;
 class UPlantHealthBaseComponent;
 class UPlantAttackBaseComponent;
-class UPaperSpriteComponent;
+class UPaperFlipbookComponent;
 
-//·Ç³éÏóÀàÖ²ÎïĞèÒªÎªPlantID¸³Öµ£¬È»ºóµ÷ÓÃInitº¯Êı£¬²¢ÇÒ±ØĞëÖØĞ´Deadº¯Êı
+//éæŠ½è±¡ç±»æ¤ç‰©æ„é€ å‡½æ•°ä¸­éœ€è¦ä¸ºPlantIDèµ‹å€¼ï¼Œç„¶åè°ƒç”¨Initå‡½æ•°ï¼Œå¹¶ä¸”å¿…é¡»åœ¨è“å›¾å®ç°Deadå‡½æ•°
 UCLASS(Abstract)
 class PVZ_API APlantBase : public AActor
 {
@@ -32,72 +31,74 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	/*
-		¼Ì³ĞÀàÎŞĞèÅäÖÃ
+		ç»§æ‰¿ç±»æ— éœ€é…ç½®
 	*/
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UPaperSpriteComponent* PaperSpriteComponent;
+	UPaperFlipbookComponent* SpriteComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UBuffComponent* BuffComponent;
 
 	/*
-		¼Ì³ĞÀàĞèÅäÖÃ
+		ç»§æ‰¿ç±»éœ€é…ç½®
 	*/
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UStateComponent* StateComponent;
 	
-	//ĞèÍ¨¹ıµ÷ÓÃInitº¯ÊıÈ·±£¶ÁÈ¡StatementÑªÁ¿£¬·ñÔòÎŞ·¨Õı³£¹¤×÷
+	//éœ€é€šè¿‡è°ƒç”¨Initå‡½æ•°ç¡®ä¿è¯»å–Statementè¡€é‡ï¼Œå¦åˆ™æ— æ³•æ­£å¸¸å·¥ä½œ
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UPlantHealthBaseComponent* HealthComponent;
 
-	//Ö²ÎïµÄID£¬ÓÃÓÚÇø·ÖÖ²Îï£¬ÇÒÌá¹©¸øStatementComponentÔÚDataTableÖĞ¶ÁÈ¡Êı¾İ
+	//æ¤ç‰©çš„IDï¼Œç”¨äºåŒºåˆ†æ¤ç‰©ï¼Œä¸”æä¾›ç»™StatementComponentåœ¨DataTableä¸­è¯»å–æ•°æ®
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	int32 PlantID;
 
 
-
 	/*
-		×ÔÉíº¯Êı
+		è‡ªèº«å‡½æ•°
 	*/
 	UFUNCTION(BlueprintCallable)
 	virtual bool Init();
 
-	//¿Û³ıÉúÃüÖµ£¬´«ÈëÉËº¦Öµ
+	//æ‰£é™¤ç”Ÿå‘½å€¼ï¼Œä¼ å…¥ä¼¤å®³å€¼
 	UFUNCTION(BlueprintCallable)
 	virtual void BeAttacked(float Damage);
 
-	//ËÀÍöÂß¼­
-	UFUNCTION(BlueprintCallable)
-	virtual void Dead() PURE_VIRTUAL(APlantBase::Dead, );
+	//æ­»äº¡é€»è¾‘
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	void Dead();
 	
-	//Ìí¼ÓÆæÎï
+	//æ·»åŠ å¥‡ç‰©
 	UFUNCTION(BlueprintCallable)
 	virtual void AddBuff();
 
-	//¸Ãº¯Êı»áÔÚAddBuff£¨Ìí¼ÓÆæÎï£©ÖĞ±»µ÷ÓÃ£¬ÓÃÓÚÊµÏÖĞèÒªÊµÊ±Í¬²½Buff×é¼şÖĞÊıÖµµÄĞÂÔö×é¼şµÄÂß¼­Ê±ÖØĞ´(Èçattack×é¼şÖĞ´æ´¢µÄÊµÊ±¹¥»÷Á¦ĞèÔÚ´Ë´¦¸üĞÂ£¬´úÂë¿É²Î¿¼AddBuff)
+	//è¯¥å‡½æ•°ä¼šåœ¨AddBuffï¼ˆæ·»åŠ å¥‡ç‰©ï¼‰ä¸­è¢«è°ƒç”¨ï¼Œç”¨äºå®ç°éœ€è¦å®æ—¶åŒæ­¥Buffç»„ä»¶ä¸­æ•°å€¼çš„æ–°å¢ç»„ä»¶çš„é€»è¾‘æ—¶é‡å†™(å¦‚attackç»„ä»¶ä¸­å­˜å‚¨çš„å®æ—¶æ”»å‡»åŠ›éœ€åœ¨æ­¤å¤„æ›´æ–°ï¼Œä»£ç å¯å‚è€ƒAddBuff)
 	UFUNCTION(BlueprintCallable)
-	virtual void UpdateOtherComponents();
+	virtual void BuffUpdateOtherComponents();
 
 	/*
-		·â×°×ÔBuffComponentµÄº¯Êı
+		å°è£…è‡ªBuffComponentçš„å‡½æ•°
 	*/
 
-	//¼ÆËã¶Ô½©Ê¬ÉËº¦,´«ÈëÔ­Ê¼ÉËº¦£¬·µ»Ø¾­¹ı¼ÆËãµÄÉËº¦
+	//è®¡ç®—å¯¹åƒµå°¸ä¼¤å®³,ä¼ å…¥åŸå§‹ä¼¤å®³ï¼Œè¿”å›ç»è¿‡è®¡ç®—çš„ä¼¤å®³
 	UFUNCTION(BlueprintCallable)
 	virtual float CalculateOutgoingDamage(float Damage);
 
+	//è·å–å½“å‰æ”»å‡»é—´éš”
+	UFUNCTION(BlueprintCallable)
+	virtual float GetCurrentAttackInterval();
+
 	/*
-		·â×°×ÔPlantHealthBaseComponentµÄº¯Êı
+		å°è£…è‡ªPlantHealthBaseComponentçš„å‡½æ•°
 	*/
 
-	//»Ø¸´ÉúÃüÖµ£¬´«ÈëÔö¼ÓµÄÉúÃüÖµ
+	//å›å¤ç”Ÿå‘½å€¼ï¼Œä¼ å…¥å¢åŠ çš„ç”Ÿå‘½å€¼
 	UFUNCTION(BlueprintCallable)
 	virtual void AddHealth(float Value);
 
-	//»Ø¸´ÉúÃüÖµ°Ù·Ö±È
+	//å›å¤ç”Ÿå‘½å€¼ç™¾åˆ†æ¯”
 	UFUNCTION(BlueprintCallable)
 	virtual void AddHealthPercent(float Rate);
-
 };
