@@ -15,7 +15,6 @@ enum class ERoguelikeNodeTypes : uint8
 	Shop UMETA(DisplayName = "Shop"),
 	Treasure UMETA(DisplayName = "Treasure"),
 	Boss UMETA(DisplayName = "Boss"),
-	End UMETA(DisplayName = "End"),
 };
 /**
  * 
