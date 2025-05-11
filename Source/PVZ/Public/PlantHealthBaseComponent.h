@@ -49,7 +49,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual bool Init(UStateComponent* SelfStateComponent);
 
-	//回复生命值百分比
+	//回复最大生命值百分比
 	UFUNCTION(BlueprintCallable)
 	virtual void AddHealthPercent(float Rate);
 };

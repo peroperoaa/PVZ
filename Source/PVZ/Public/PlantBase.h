@@ -11,6 +11,7 @@ class UBuffComponent;
 class UPlantHealthBaseComponent;
 class UPlantAttackBaseComponent;
 class UPaperFlipbookComponent;
+class UBoxComponent;
 
 //非抽象类植物构造函数中需要为PlantID赋值，然后调用Init函数，并且必须在蓝图实现Dead函数
 UCLASS(Abstract)
@@ -39,6 +40,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UBuffComponent* BuffComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UBoxComponent* BoxComponent;
 
 	/*
 		继承类需配置

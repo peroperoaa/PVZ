@@ -6,6 +6,8 @@
 #include "StateComponent.h"
 #include "PaperFlipbookComponent.h"
 #include "PlantHealthBaseComponent.h"
+#include "Components/BoxComponent.h"
+
 
 // Sets default values
 APlantBase::APlantBase()
@@ -16,7 +18,10 @@ APlantBase::APlantBase()
 	SpriteComponent = CreateDefaultSubobject<UPaperFlipbookComponent>(TEXT("PaperSpriteComponent"));
 	HealthComponent = CreateDefaultSubobject<UPlantHealthBaseComponent>(TEXT("HealthComponent"));
 	StateComponent = CreateDefaultSubobject<UStateComponent>(TEXT("StateComponent"));
-	RootComponent = SpriteComponent;
+	BoxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxComponent"));
+	BoxComponent->SetupAttachment(SpriteComponent);
+	BoxComponent->SetRelativeLocation(FVector(0.f, 0.f, 0.f));
+	//BoxComponent->SetCollisionProfileName(TEXT("Plant"));
 	PlantID = 0;
 }
 

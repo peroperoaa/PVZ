@@ -10,12 +10,11 @@ APeashooter::APeashooter()
 	PrimaryActorTick.bCanEverTick = true;
 	PlantID = 1;
 	Init();
-	AttackInterval = 2.f;
 }
 void APeashooter::BeginPlay()
 {
 	Super::BeginPlay();
-	//AttackInterval = GetCurrentAttackInterval();
+	AttackInterval = GetCurrentAttackInterval();
 	if (AttackInterval < 0)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("APeashooter::BeginPlay : AttackInterval is error"));
