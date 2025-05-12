@@ -2,7 +2,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "PlantProjectileBase.h"
 
 // Sets default values
 APlantProjectileBase::APlantProjectileBase()

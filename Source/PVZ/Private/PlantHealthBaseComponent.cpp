@@ -3,7 +3,6 @@
 
 #include "PlantHealthBaseComponent.h"
 #include "StateComponent.h"
-#include "PlantBase.h"
 
 // Sets default values for this component's properties
 UPlantHealthBaseComponent::UPlantHealthBaseComponent()
@@ -54,22 +53,22 @@ void UPlantHealthBaseComponent::BeAttacked(float FinalDamage)
 		return;
 	}
 	CurrentHealth -= FinalDamage;
-	if (CurrentHealth <= 0)
-	{
-		AActor* Owner = GetOwner();
-		if (!Owner)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("UPlantHealthBaseComponent::BeAttacked : Owner is null"));
-			return;
-		}
-		APlantBase* PlantBase = Cast<APlantBase>(Owner);
-		if (!PlantBase)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("UPlantHealthBaseComponent::BeAttacked : PlantBase is null"));
-			return;
-		}
-		PlantBase->Dead();
-	}
+	//if (CurrentHealth <= 0)
+	//{
+	//	AActor* Owner = GetOwner();
+	//	if (!Owner)
+	//	{
+	//		UE_LOG(LogTemp, Warning, TEXT("UPlantHealthBaseComponent::BeAttacked : Owner is null"));
+	//		return;
+	//	}
+	//	APlantBase* PlantBase = Cast<APlantBase>(Owner);
+	//	if (!PlantBase)
+	//	{
+	//		UE_LOG(LogTemp, Warning, TEXT("UPlantHealthBaseComponent::BeAttacked : PlantBase is null"));
+	//		return;
+	//	}
+	//	PlantBase->Dead();
+	//}
 }
 
 void UPlantHealthBaseComponent::AddHealth(float Value)
