@@ -43,8 +43,11 @@ bool APlantBase::Init()
 {
 	if (StateComponent)
 	{
-		if(StateComponent->Init(PlantID))
-			return HealthComponent->Init(StateComponent);
+		if (StateComponent->Init(PlantID))
+		{
+			HealthComponent->Init(StateComponent->BaseMaxHealth);
+			return true;
+		}
 		else
 		{
 			UE_LOG(LogTemp, Warning, TEXT("APlantBase::Init : StateComponent Init failed"));

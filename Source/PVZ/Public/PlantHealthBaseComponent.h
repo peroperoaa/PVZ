@@ -45,9 +45,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual void AddHealth(float Value);
 
-	//初始化Health组件，返回是否初始化成功
+	//初始化Health组件
 	UFUNCTION(BlueprintCallable)
-	virtual bool Init(UStateComponent* SelfStateComponent);
+	virtual void Init(float BaseMaxHealth);
 
 	//回复最大生命值百分比
 	UFUNCTION(BlueprintCallable)

@@ -63,7 +63,7 @@ bool UStateComponent::Init(int32 SelfPlantID)
 	}
 	else
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Failed to find row in DataTable"));
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("StateCoponent::Init:Failed to find row in DataTable"));
 		return false;
 	}
 }

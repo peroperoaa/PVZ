@@ -93,14 +93,8 @@ void UPlantHealthBaseComponent::AddHealthPercent(float Rate)
 }
 
 
-bool UPlantHealthBaseComponent::Init(UStateComponent* SelfStateComponent)
+void UPlantHealthBaseComponent::Init(float BaseMaxHealth)
 {
-	if (!SelfStateComponent)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("UPlantHealthBaseComponent::Init : SelfStateComponent is null"));
-		return false;
-	}
-	CurrentHealth = CalculatedMaxHealth = SelfStateComponent->BaseMaxHealth;
-	return true;
+	CurrentHealth = CalculatedMaxHealth = BaseMaxHealth;
 }
 
