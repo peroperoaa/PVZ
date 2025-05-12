@@ -21,8 +21,4 @@ private:
 	// 绑定按钮组件
 	UPROPERTY(meta = (BindWidget))
 	class UButton* Button_Adventure;
-
-	// 定义一个点击事件的函数
-	UFUNCTION()
-	void Button_AdventureClicked();
 };

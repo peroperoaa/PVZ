@@ -17,6 +17,12 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	int32 Difficulty = 1;
 
+	UFUNCTION(BlueprintCallable)
+	void ScrollToDifficulty();
+
+	UFUNCTION(BlueprintCallable)
+	void SetDifficultyButtonForbid();
+
 protected:
 	virtual bool Initialize() override;
 	virtual void NativeConstruct() override;
@@ -28,9 +34,14 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	class UScrollBox* DifficultySelectScrollBox;
 
+	UPROPERTY(meta = (BindWidget))
+	class UButton* MinusDifficultyButton;
+
 	UFUNCTION()
 	void AddDifficultyButtonClicked();
 
 	UFUNCTION()
-	void ScrollToDIfficulty();
+	void MinusDifficultyButtonClicked();
+
+	
 };

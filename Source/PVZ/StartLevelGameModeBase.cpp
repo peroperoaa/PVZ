@@ -23,6 +23,5 @@ void AStartLevelGameModeBase::BeginPlay() {
 		PlayerController->bEnableClickEvents = true;
 		PlayerController->bEnableMouseOverEvents = true;
 	}
-
 	
 }

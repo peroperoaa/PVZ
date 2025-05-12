@@ -7,6 +7,7 @@
 #include "Components/Widget.h"
 #include "Components/PanelWidget.h"
 
+
 bool UDifficultySelectInterface::Initialize()
 {
 	if (!Super::Initialize()) {
@@ -15,23 +16,27 @@ bool UDifficultySelectInterface::Initialize()
 	if (AddDifficultyButton) {
 		AddDifficultyButton->OnClicked.AddDynamic(this, &UDifficultySelectInterface::AddDifficultyButtonClicked);
 	}
+        if (MinusDifficultyButton) {
+                MinusDifficultyButton->OnClicked.AddDynamic(this, &UDifficultySelectInterface::MinusDifficultyButtonClicked);
+        }
 	return true;
 }
+
 void UDifficultySelectInterface::NativeConstruct()
 {
         Super::NativeConstruct();
-
-        ScrollToDIfficulty();
 }
 
-void UDifficultySelectInterface::ScrollToDIfficulty()
+
+void UDifficultySelectInterface::ScrollToDifficulty()
 {
+       
 	if (!DifficultySelectScrollBox || Difficulty < 1) {
 		return;
 	}
         // 获取 ScrollBox 的所有子控件
         const TArray<UWidget*> Children = DifficultySelectScrollBox->GetAllChildren();
-
+        
         for (UWidget* Child : Children)
         {
                 if (!Child)
@@ -42,20 +47,42 @@ void UDifficultySelectInterface::ScrollToDIfficulty()
                 // 获取子控件的显示名称
                 const FString DisplayName = Child->GetName();
 
-                // 检查显示名称是否与 Difficulty 匹配
                 if (DisplayName == FString::FromInt(Difficulty))
                 {
-                        // 将匹配的控件滚动到视图中
+                        // 滚动到目标子控件
                         DifficultySelectScrollBox->ScrollWidgetIntoView(Child, true, EDescendantScrollDestination::Center, 0.0f);
-                        break;
+                        return;
                 }
         }
 }
 
+void UDifficultySelectInterface::SetDifficultyButtonForbid()
+{
+        if (Difficulty == 1) {
+                MinusDifficultyButton->SetIsEnabled(false);
+        }
+        else if (Difficulty == 10) {
+                AddDifficultyButton->SetIsEnabled(false);
+        }
+        else {
+                MinusDifficultyButton->SetIsEnabled(true);
+                AddDifficultyButton->SetIsEnabled(true);
+        }
+        
+}
+
 void UDifficultySelectInterface::AddDifficultyButtonClicked()
 {
+        if (Difficulty >= 10) return;
 	Difficulty++;
-        ScrollToDIfficulty();
+        //ScrollToDifficulty();
+}
+
+void UDifficultySelectInterface::MinusDifficultyButtonClicked()
+{
+        if (Difficulty <= 1) return;
+        Difficulty--;
+        //ScrollToDifficulty();
 }
 
 
