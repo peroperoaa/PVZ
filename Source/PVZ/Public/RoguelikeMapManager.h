@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "MapNode.h"
+#include "NodeConnection.h"
 #include "RoguelikeMapManager.generated.h"
 
 // 存储节点连接关系的结构体
@@ -40,6 +41,16 @@ struct FMapLayer
     int32 NumColumns;
 };
 
+// 存储节点可视化连接的结构体
+USTRUCT()
+struct FNodeVisualConnections
+{
+    GENERATED_BODY()
+    
+    UPROPERTY()
+    TMap<AMapNode*, ANodeConnection*> Connections;
+};
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FNodeActivatedSignature, AMapNode*, ActivatedNode);
 
 UCLASS()
@@ -49,8 +60,7 @@ class PVZ_API ARoguelikeMapManager : public AActor
 
 public:
     ARoguelikeMapManager();
-
-protected:
+    
     virtual void BeginPlay() override;
 
     // 处理节点激活事件
@@ -83,12 +93,18 @@ protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Roguelike")
     TArray<FMapLayer> MapLayers;
 
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Roguelike")
+    TArray<FName> MapNames; // 每一层对应的地图名称
+
     // 节点间的水平和垂直间距
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Roguelike")
-    float HorizontalSpacing = 500.0f;
+    float HorizontalSpacing = 200.0f;
 
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Roguelike")
-    float VerticalSpacing = 300.0f;
+    float VerticalSpacing = 100.0f;
+
+    UPROPERTY(EditAnywhere, Category = "Map Generation")
+    float LayerHorizontalOffset = 1500.0f; // 层与层之间的X轴距离
 
     // 生成特定层的地图
     void GenerateLayer(int32 LayerIndex);
@@ -129,4 +145,29 @@ public:
     // 节点激活事件委托
     UPROPERTY(BlueprintAssignable, Category = "Roguelike")
     FNodeActivatedSignature OnNodeActivated;
+    
+private:
+    // 存储节点间的可视化连接
+    UPROPERTY()
+    TMap<AMapNode*, FNodeVisualConnections> VisualConnections;
+
+    // 创建可视化连接
+    ANodeConnection* CreateVisualConnection(AMapNode* FromNode, AMapNode* ToNode);
+public:
+    // 更新连接的可视状态
+    UFUNCTION(BlueprintCallable, Category = "Roguelike")
+    void UpdateConnectionVisuals(AMapNode* Node);
+    
+    UPROPERTY(EditDefaultsOnly, Category = "Connection Visual")
+    TSubclassOf<ANodeConnection> ConnectionClass;
+    
+    UPROPERTY(EditDefaultsOnly, Category = "Connection Visual")
+    UStaticMesh* ConnectionMesh;
+    
+    UPROPERTY(EditDefaultsOnly, Category = "Connection Visual")
+    UMaterialInterface* NormalConnectionMaterial;
+    
+    UPROPERTY(EditDefaultsOnly, Category = "Connection Visual")
+    UMaterialInterface* ActiveConnectionMaterial;
+    
 };

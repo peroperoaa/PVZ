@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "RoguelikeNodeTypes.h"
+#include "Components/WidgetComponent.h"
 #include "MapNode.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FNodeActivated, AMapNode*, ActivatedNode);
@@ -12,6 +13,7 @@ UCLASS()
 class PVZ_API AMapNode : public AActor
 {
 	GENERATED_BODY()
+	// MapNode.h中添加以下内容
 	
 public:	
 	// Sets default values for this actor's properties
@@ -32,6 +34,14 @@ public:
 	//节点调用委托
 	UPROPERTY(BlueprintAssignable, Category = "Roguelike")
 	FNodeActivated OnNodeActivated;
+
+	// 可视化组件
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Roguelike")
+	USceneComponent* NodeVisualComponent;
+	
+	// 用于显示图片的Widget组件
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Roguelike")
+	UWidgetComponent* NodeWidgetComponent;
 	
 	//进入节点
 	UFUNCTION(BlueprintNativeEvent)

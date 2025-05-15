@@ -4,6 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "RoguelikeGameInstance.h"
+#include "RoguelikeMapManager.h"
+#include "Kismet/GameplayStatics.h"
 #include "RoguelikeGameMode.generated.h"
 
 /**
@@ -13,5 +16,4 @@ UCLASS()
 class PVZ_API ARoguelikeGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
-	
 };
