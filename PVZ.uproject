@@ -10,7 +10,8 @@
 			"LoadingPhase": "Default",
 			"AdditionalDependencies": [
 				"Engine",
-				"StructUtilsEngine"
+				"StructUtilsEngine",
+				"Paper2D"
 			]
 		}
 	],

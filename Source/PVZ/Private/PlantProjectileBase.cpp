@@ -1,4 +1,9 @@
 #include "PlantProjectileBase.h"
+#include "Components/BoxComponent.h"
+#include "PaperSpriteComponent.h"
+#include "ZombieBase.h"
+#include "PlantBase.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
@@ -10,8 +15,10 @@ APlantProjectileBase::APlantProjectileBase()
 	PrimaryActorTick.bCanEverTick = true;
 	BoxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxComponent"));
 	SpriteComponent = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("PaperSpriteComponent"));
-	RootComponent = SpriteComponent;
-	BoxComponent->SetupAttachment(SpriteComponent);
+	ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovementComponent"));
+	RootComponent = BoxComponent;
+	SpriteComponent->SetupAttachment(BoxComponent);
+	Damage = 20.f;//测试数据
 }
 
 // Called when the game starts or when spawned
@@ -30,12 +37,23 @@ void APlantProjectileBase::Tick(float DeltaTime)
 
 void APlantProjectileBase::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	//ZombieBase* Zombie = Cast<ZombieBase>(OtherActor);
-	//if (!Zombie)
-	//	return;
-	UE_LOG(LogTemp, Warning, TEXT("APlantProjectileBase::BeginOverlap: 造成伤害逻辑"));
+	AZombieBase* Zombie = Cast<AZombieBase>(OtherActor);
+	if (!Zombie)
+		return;
+	float OutDamage = Damage;
+	AActor* Parent = GetOwner();
+	if (Parent)
+	{
+		APlantBase* Plant = Cast<APlantBase>(Parent);
+		if (Plant)
+			OutDamage = Plant->CalculateOutgoingDamage(Damage);
+	}
+	Zombie->BeAttacked(OutDamage);
+	BoxComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	SpriteComponent->SetVisibility(false);
+	Destroy();
 }
-
+//待优化
 void APlantProjectileBase::Init(float InDamage, AActor* InOwner)
 {
 	Damage = InDamage;
