@@ -10,6 +10,10 @@ APeashooter::APeashooter()
 	AttackInterval = 0.f;
 	Init();
 }
+void APeashooter::Dead()
+{
+	Destroy();
+}
 void APeashooter::BeginPlay()
 {
 	Super::BeginPlay();

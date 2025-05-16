@@ -38,4 +38,6 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 	void OnTryAttack();
 
+	virtual void Dead() override;
+
 };

@@ -14,7 +14,7 @@ class UPlantAttackBaseComponent;
 /**
  * 
  */
- //非抽象类植物构造函数中需要为PlantID赋值，然后调用Init函数
+ //非抽象类植物构造函数中需要为PlantID赋值，然后调用Init函数,可重写Dead()
 UCLASS()
 class PVZ_API APlantBase : public APaperZDCharacter
 {

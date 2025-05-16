@@ -16,13 +16,19 @@ AZombie::AZombie()
 	if (SelfCapsuleComponent)
 	{
 		GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AZombie::OnBeginOverlap);
-		GetCapsuleComponent()->OnComponentEndOverlap.AddDynamic(this, &AZombie::OnEndOverlap);
 	}
 }
 
 void AZombie::Dead()
 {
 	bIsDead = true;
+	Destroy();
+}
+
+void AZombie::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+	GetWorld()->GetTimerManager().ClearTimer(AttackTimerHandle);
 }
 
 void AZombie::BeginPlay()
@@ -39,6 +45,9 @@ void AZombie::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* O
 		bIsNeedAttack = true;
 		Move(false);
 		GetWorld()->GetTimerManager().SetTimer(AttackTimerHandle, this, &AZombie::OnTryAttack, AttackInterval, true);
+		AttackingPlant = Plant;
+		// 添加植物销毁事件监听
+		Plant->OnDestroyed.AddDynamic(this, &AZombie::OnAttackingPlantDestroyed);
 	}
 	//else
 	//{
@@ -48,10 +57,13 @@ void AZombie::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* O
 	//}
 }
 
-void AZombie::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+void AZombie::OnAttackingPlantDestroyed(AActor* DestroyedActor)
 {
-	bIsNeedAttack = false;
-	Move(true);
-	GetWorld()->GetTimerManager().ClearTimer(AttackTimerHandle);
+	if (AttackingPlant == DestroyedActor)
+	{
+		bIsNeedAttack = false;
+		Move(true);
+		GetWorld()->GetTimerManager().ClearTimer(AttackTimerHandle);
+		AttackingPlant = nullptr;
+	}
 }
-

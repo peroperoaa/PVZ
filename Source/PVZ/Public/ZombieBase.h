@@ -13,6 +13,7 @@ class UPlantHealthBaseComponent;
 /**
  * 
  */
+ //非抽象类植物构造函数中需要为ZombieID赋值，然后调用Init函数,可重写Dead()
 UCLASS()
 class PVZ_API AZombieBase : public APaperZDCharacter
 {
