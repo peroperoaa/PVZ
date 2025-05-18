@@ -11,14 +11,14 @@
 // Sets default values
 APlantProjectileBase::APlantProjectileBase()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	BoxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxComponent"));
 	SpriteComponent = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("PaperSpriteComponent"));
 	ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovementComponent"));
 	RootComponent = BoxComponent;
 	SpriteComponent->SetupAttachment(BoxComponent);
-	Damage = 20.f;//测试数据
+	Damage = 20.f;//测试用
 }
 
 // Called when the game starts or when spawned

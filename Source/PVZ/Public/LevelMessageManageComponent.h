@@ -39,8 +39,4 @@ public:
 	//删除植物信息
 	UFUNCTION(BlueprintCallable)
 	void RemovePlant(int32 Row, int32 Column, APlantBase* Plant);
-
-
-	UBuffComponent*
-
 };

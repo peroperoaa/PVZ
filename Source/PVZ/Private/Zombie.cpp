@@ -12,6 +12,7 @@ AZombie::AZombie()
 	bIsNeedAttack = false;
 	bIsDead = false;
 	AttackInterval = .5f;
+	AttackingPlant = nullptr;
 	UCapsuleComponent* SelfCapsuleComponent = GetCapsuleComponent();
 	if (SelfCapsuleComponent)
 	{
@@ -29,6 +30,7 @@ void AZombie::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
 	GetWorld()->GetTimerManager().ClearTimer(AttackTimerHandle);
+	Move(true);
 }
 
 void AZombie::BeginPlay()

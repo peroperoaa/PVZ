@@ -9,6 +9,8 @@
 class UBoxComponent;
 class UPaperSpriteComponent;
 class UProjectileMovementComponent;
+
+//子弹伤害需要在实例类中实现
 UCLASS()
 class PVZ_API APlantProjectileBase : public AActor
 {
