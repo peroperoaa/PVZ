@@ -61,7 +61,7 @@ void UDifficultySelectInterface::SetDifficultyButtonForbid()
         if (Difficulty == 1) {
                 MinusDifficultyButton->SetIsEnabled(false);
         }
-        else if (Difficulty == 10) {
+        else if (Difficulty == 9) {
                 AddDifficultyButton->SetIsEnabled(false);
         }
         else {
@@ -73,7 +73,7 @@ void UDifficultySelectInterface::SetDifficultyButtonForbid()
 
 void UDifficultySelectInterface::AddDifficultyButtonClicked()
 {
-        if (Difficulty >= 10) return;
+        if (Difficulty >= 9) return;
 	Difficulty++;
         //ScrollToDifficulty();
 }

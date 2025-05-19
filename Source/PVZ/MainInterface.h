@@ -14,7 +14,7 @@ class PVZ_API UMainInterface : public UUserWidget
 	GENERATED_BODY()
 protected:
 	virtual bool Initialize() override;
-
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 private:
 	UPROPERTY(meta = (BindWidget))
 	class UButton* NextStepButton;
@@ -25,9 +25,15 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	class UWidgetSwitcher* WidgetSwitcher;
 
+	UPROPERTY(meta = (BindWidget))
+	class UButton* CollectionInterfaceButton;
+
 	UFUNCTION()
 	void NextStepButtonClicked();
 
 	UFUNCTION()
 	void PreviousStepButtonClicked();
+
+	UFUNCTION()
+	void CollectionInterfaceButtonClicked();
 };	
