@@ -8,6 +8,8 @@
 #include "Components/WidgetComponent.h"
 #include "MapNode.generated.h"
 
+class UNodeUIWidget;
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FNodeActivated, AMapNode*, ActivatedNode);
 UCLASS()
 class PVZ_API AMapNode : public AActor
@@ -46,6 +48,25 @@ public:
 	//进入节点
 	UFUNCTION(BlueprintNativeEvent)
 	void EnterNode(APlayerController* PlayerController);
+
+	
+	// 在现有属性之后添加
+	// 节点所在的列
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Roguelike")
+	int32 Column;
+
+	// 与此节点相连的节点
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Roguelike")
+	TArray<AMapNode*> ConnectedNodes;
+
+	// 节点是否已禁用
+	UPROPERTY(BlueprintReadWrite, Category = "Roguelike")
+	bool bIsDisabled;
+
+	// 禁用节点的方法
+	UFUNCTION(BlueprintCallable, Category = "Roguelike")
+	void DisableNode(AMapNode* NodeToDisable);
+	
 	
 protected:
 	// Called when the game starts or when spawned

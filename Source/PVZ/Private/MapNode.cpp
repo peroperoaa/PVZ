@@ -2,6 +2,8 @@
 
 
 #include "MapNode.h"
+#include "NodeUIWidget.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AMapNode::AMapNode()
@@ -20,6 +22,11 @@ AMapNode::AMapNode()
 	NodeWidgetComponent->SetupAttachment(NodeVisualComponent);
 
 	// 设置Widget组件的属性
+	static ConstructorHelpers::FClassFinder<UUserWidget> NodeWidgetClassFinder(TEXT("/Game/Blueprint/UI_Node/WBP_NodeUI"));
+	if (NodeWidgetClassFinder.Succeeded())
+	{
+		NodeWidgetComponent->SetWidgetClass(NodeWidgetClassFinder.Class);
+	}
 	NodeWidgetComponent->SetWidgetSpace(EWidgetSpace::Screen); // 设置为屏幕空间
 	NodeWidgetComponent->SetDrawSize(FVector2D(200, 100)); // 设置Widget大小
 
@@ -34,7 +41,21 @@ AMapNode::AMapNode()
 void AMapNode::BeginPlay()
 {
 	Super::BeginPlay();
-	
+    
+	// 获取创建的Widget并设置节点
+	if (NodeWidgetComponent)
+	{
+		// 必须延迟一帧等待widget创建完成
+		FTimerHandle TimerHandle;
+		GetWorldTimerManager().SetTimerForNextTick([this]()
+		{
+			UNodeUIWidget* NodeUI = Cast<UNodeUIWidget>(NodeWidgetComponent->GetUserWidgetObject());
+			if (NodeUI)
+			{
+				NodeUI->SetNode(this);
+			}
+		});
+	}
 }
 
 // Called every frame
@@ -46,12 +67,30 @@ void AMapNode::Tick(float DeltaTime)
 
 void AMapNode::EnterNode_Implementation(APlayerController* PlayerController)
 {
-	// Implement the logic for entering the node here
+	// 标记节点已访问
 	bIsVisited = true;
+
 	
 }
 
 // 在MapNode.cpp中添加以下实现
 //禁用节点的代码
+void AMapNode::DisableNode(AMapNode* NodeToDisable)
+{
+	if (!NodeToDisable)
+		return;
 
+	// 设置节点为禁用状态
+	NodeToDisable->bIsDisabled = true;
+
+	// 更新节点UI以显示禁用状态
+	UNodeUIWidget* NodeUI = Cast<UNodeUIWidget>(NodeToDisable->NodeWidgetComponent->GetUserWidgetObject());
+	if (NodeUI)
+	{
+		NodeUI->UpdateNodeState();
+	}
+
+	// 禁用节点的交互性
+	NodeToDisable->SetActorEnableCollision(false);
+}
 

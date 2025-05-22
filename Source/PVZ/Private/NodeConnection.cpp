@@ -1,5 +1,7 @@
 // NodeConnection.cpp
+
 #include "NodeConnection.h"
+#include "MapNode.h"
 
 ANodeConnection::ANodeConnection()
 {

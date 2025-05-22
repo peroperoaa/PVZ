@@ -15,5 +15,7 @@ class PVZ_API ABossNode : public AMapNode
 	GENERATED_BODY()
 	
 public:
+	ABossNode();
+		
 	virtual void EnterNode_Implementation(APlayerController* PlayerController) override;
 };

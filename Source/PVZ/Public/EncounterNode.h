@@ -4,16 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "MapNode.h"
-#include "BattleNode.generated.h"
+#include "EncounterNode.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PVZ_API ABattleNode : public AMapNode
+class PVZ_API AEncounterNode : public AMapNode
 {
 	GENERATED_BODY()
-	
 public:
+	AEncounterNode();
+	
 	virtual void EnterNode_Implementation(APlayerController* PlayerController) override;
 };

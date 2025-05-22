@@ -10,10 +10,10 @@ UENUM(BlueprintType, meta = (ScriptName = "RoguelikeNodeTypes"))
 enum class ERoguelikeNodeTypes : uint8
 {
 	None UMETA(DisplayName = "None"),
-	Battle UMETA(DisplayName = "Battle"),
-	Occurrence UMETA(DisplayName = "Occurrence"),
+	Combat UMETA(DisplayName = "Combat"),
+	Encounter UMETA(DisplayName = "Encounter"),
 	Shop UMETA(DisplayName = "Shop"),
-	Treasure UMETA(DisplayName = "Treasure"),
+	Wish UMETA(DisplayName = "Wish"),
 	Boss UMETA(DisplayName = "Boss"),
 };
 /**

@@ -65,19 +65,6 @@ void ARoguelikeMapManager::GenerateMap()
 // 生成特定层的地图
 void ARoguelikeMapManager::GenerateLayer(int32 LayerIndex)
 {
-    /*if (MapNames.IsValidIndex(LayerIndex))
-    {
-        UE_LOG(LogTemp, Warning, TEXT("valid MapName for Layer %d"), LayerIndex);
-        FName MapName = MapNames[LayerIndex];
-        if (!MapName.IsNone())
-        {
-            UGameplayStatics::OpenLevel(this, MapName, true); // 加载对应的地图
-        }
-    }
-    else 
-    {
-        UE_LOG(LogTemp, Warning, TEXT("Invalid MapName for Layer %d"), LayerIndex);
-    }*/
 
     FMapLayer& Layer = MapLayers[LayerIndex];
     Layer.Columns.SetNum(Layer.NumColumns);
@@ -145,6 +132,7 @@ void ARoguelikeMapManager::GenerateLayer(int32 LayerIndex)
             if (NewNode)
             {
                 // 记录节点所属的列
+                NewNode->Column = col; // 设置列号
                 Layer.Columns[col].Nodes.Add(NewNode);
             }
         }
@@ -159,7 +147,7 @@ ERoguelikeNodeTypes ARoguelikeMapManager::GetRandomNodeType(int32 Layer, int32 C
     {
         if (Column == 0) // 第一个节点
         {
-            return ERoguelikeNodeTypes::Battle;
+            return ERoguelikeNodeTypes::Combat;
         }
         else if (Column == MapLayers[Layer].NumColumns - 1) // 最后一个节点
         {
@@ -167,25 +155,25 @@ ERoguelikeNodeTypes ARoguelikeMapManager::GetRandomNodeType(int32 Layer, int32 C
         }
         else // 中间节点
         {
-            // 随机选择Occurrence或Battle
-            return (FMath::RandBool()) ? ERoguelikeNodeTypes::Occurrence : ERoguelikeNodeTypes::Battle;
+            // 随机选择Encounter或Combat
+            return (FMath::RandBool()) ? ERoguelikeNodeTypes::Encounter : ERoguelikeNodeTypes::Combat;
         }
     }
     else if (Layer == 1) // 第二层
     {
         if (Column == 0) // 第一列节点
         {
-            return (FMath::RandBool()) ? ERoguelikeNodeTypes::Occurrence : ERoguelikeNodeTypes::Battle;
+            return (FMath::RandBool()) ? ERoguelikeNodeTypes::Encounter : ERoguelikeNodeTypes::Combat;
         }
         else if (Column == MapLayers[Layer].NumColumns - 1) // 最后一列
         {
-            return ERoguelikeNodeTypes::Treasure;
+            return ERoguelikeNodeTypes::Wish;
         }
-        else // 中间列不能是Treasure
+        else // 中间列不能是Wish
         {
             TArray<ERoguelikeNodeTypes> PossibleTypes = {
-                ERoguelikeNodeTypes::Battle,
-                ERoguelikeNodeTypes::Occurrence,
+                ERoguelikeNodeTypes::Combat,
+                ERoguelikeNodeTypes::Encounter,
                 ERoguelikeNodeTypes::Shop
             };
             return PossibleTypes[FMath::RandRange(0, PossibleTypes.Num() - 1)];
@@ -204,10 +192,10 @@ ERoguelikeNodeTypes ARoguelikeMapManager::GetRandomNodeType(int32 Layer, int32 C
     {
         // 定义可能的节点类型及其权重
         TArray<ERoguelikeNodeTypes> PossibleTypes = {
-            ERoguelikeNodeTypes::Battle,
-            ERoguelikeNodeTypes::Occurrence,
+            ERoguelikeNodeTypes::Combat,
+            ERoguelikeNodeTypes::Encounter,
             ERoguelikeNodeTypes::Shop,
-            ERoguelikeNodeTypes::Treasure
+            ERoguelikeNodeTypes::Wish
         };
 
         TArray<float> Weights = { 0.55f, 0.3f, 0.08f, 0.07f }; // 权重可以根据需要调整
@@ -232,7 +220,7 @@ ERoguelikeNodeTypes ARoguelikeMapManager::GetRandomNodeType(int32 Layer, int32 C
         }
 
         // 默认返回战斗节点
-        return ERoguelikeNodeTypes::Battle;
+        return ERoguelikeNodeTypes::Combat;
     }
 }
 

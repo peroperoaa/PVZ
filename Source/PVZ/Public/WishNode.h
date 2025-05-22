@@ -4,16 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "MapNode.h"
-#include "TreasureNode.generated.h"
+#include "WishNode.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PVZ_API ATreasureNode : public AMapNode
+class PVZ_API AWishNode : public AMapNode
 {
 	GENERATED_BODY()
-	
+
 public:
+	AWishNode();
+	
 	virtual void EnterNode_Implementation(APlayerController* PlayerController) override;
 };
