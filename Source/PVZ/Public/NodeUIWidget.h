@@ -26,10 +26,10 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	class UCanvasPanel* NodeCanvas;
 	
-	UPROPERTY(meta = (BindWidget))
+	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
 	class UButton* ActionButton;
     
-	UPROPERTY(meta = (BindWidget))
+	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
 	class UTextBlock* NodeInfoText;
 
 	UPROPERTY(EditDefaultsOnly, Category = "UI")
@@ -42,6 +42,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "UI")
 	void SetNode(AMapNode* InNode);
 
+	// 设置节点可交互状态
+	UFUNCTION(BlueprintImplementableEvent, Category = "UI")
+	void SetNodeEnterable();
+	
 	// 更新节点UI状态（根据节点是否禁用等）
 	UFUNCTION(BlueprintCallable, Category = "UI")
 	void UpdateNodeState();
@@ -51,7 +55,9 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "UI")
 	void OnNodeVisited();
-	
+
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	AMapNode* GetCurrentNode() const { return CurrentNode; }
 private:
 	// 当前关联的节点
 	UPROPERTY()

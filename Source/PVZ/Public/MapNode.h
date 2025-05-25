@@ -9,6 +9,7 @@
 #include "MapNode.generated.h"
 
 class UNodeUIWidget;
+class ARoguelikeCharacter;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FNodeActivated, AMapNode*, ActivatedNode);
 UCLASS()
@@ -28,10 +29,6 @@ public:
 	//节点坐标
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Roguelike")
 	FIntVector GridCoordinate;
-
-	//是否访问
-	UPROPERTY(BlueprintReadWrite, SaveGame, Category = "Roguelike")
-	bool bIsVisited = false;
 	
 	//节点调用委托
 	UPROPERTY(BlueprintAssignable, Category = "Roguelike")
@@ -53,11 +50,25 @@ public:
 	// 在现有属性之后添加
 	// 节点所在的列
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Roguelike")
-	int32 Column;
+	int32 ColumnIndex;
+
+	// 节点所在层
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Roguelike")
+	int32 LayerIndex;
 
 	// 与此节点相连的节点
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Roguelike")
 	TArray<AMapNode*> ConnectedNodes;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Roguelike")
+	bool bIsLastNodeInLayer;
+
+	// 节点是否可访问
+	UPROPERTY(BlueprintReadWrite, Category = "Roguelike")
+	bool bIsEnterable = false;
+
+	UFUNCTION(BlueprintCallable, Category = "Roguelike")
+	void SetEnterable(AMapNode* NodeToSet);
 
 	// 节点是否已禁用
 	UPROPERTY(BlueprintReadWrite, Category = "Roguelike")
@@ -66,6 +77,19 @@ public:
 	// 禁用节点的方法
 	UFUNCTION(BlueprintCallable, Category = "Roguelike")
 	void DisableNode(AMapNode* NodeToDisable);
+
+	//是否访问
+	UPROPERTY(BlueprintReadWrite, SaveGame, Category = "Roguelike")
+	bool bIsVisited = false;
+
+	UFUNCTION(BlueprintCallable, Category = "Roguelike")
+	void VisitNode(AMapNode* NodeToVisit);
+
+	UFUNCTION(BlueprintCallable, Category = "Roguelike")
+	void CollectAccessibleNodesInLayer(ARoguelikeMapManager* MapManager, TArray<AMapNode*>& AccessibleNodes);
+
+	UFUNCTION(BlueprintCallable, Category = "Roguelike")
+	void DisableInaccessibleNodesInLayer(ARoguelikeMapManager* MapManager, const TArray<AMapNode*>& AccessibleNodes);
 	
 	
 protected:

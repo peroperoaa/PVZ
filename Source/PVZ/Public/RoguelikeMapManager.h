@@ -6,6 +6,8 @@
 #include "NodeConnection.h"
 #include "RoguelikeMapManager.generated.h"
 
+class ARoguelikeCharacter;
+
 // 存储节点连接关系的结构体
 USTRUCT(BlueprintType)
 struct FNodeConnections
@@ -145,7 +147,11 @@ public:
     // 节点激活事件委托
     UPROPERTY(BlueprintAssignable, Category = "Roguelike")
     FNodeActivatedSignature OnNodeActivated;
-    
+
+    // 获取同列节点
+    UFUNCTION(BlueprintCallable, Category = "Roguelike")
+    void GetNodesInSameColumn(AMapNode* Node, TArray<AMapNode*>& OutNodes);
+   
 private:
     // 存储节点间的可视化连接
     UPROPERTY()
@@ -158,6 +164,9 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Roguelike")
     void UpdateConnectionVisuals(AMapNode* Node);
     
+    UFUNCTION(BlueprintCallable, Category = "Roguelike")
+    void HideConnectionsForNode(AMapNode* Node);
+
     UPROPERTY(EditDefaultsOnly, Category = "Connection Visual")
     TSubclassOf<ANodeConnection> ConnectionClass;
     

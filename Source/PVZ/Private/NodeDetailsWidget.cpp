@@ -12,6 +12,12 @@ void UNodeDetailsWidget::NativeConstruct()
     {
         ConfirmButton->OnClicked.AddDynamic(this, &UNodeDetailsWidget::OnConfirmButtonClicked);
     }
+
+    // 绑定退出按钮事件
+    if (ExitButton)
+    {
+        ExitButton->OnClicked.AddDynamic(this, &UNodeDetailsWidget::OnExitButtonClicked);
+    }
 }
 
 void UNodeDetailsWidget::SetNode(AMapNode* InNode)
@@ -80,4 +86,11 @@ void UNodeDetailsWidget::OnConfirmButtonClicked()
             RemoveFromParent();
         }
     }
+}
+
+// 添加退出按钮点击事件处理函数
+void UNodeDetailsWidget::OnExitButtonClicked()
+{
+    // 直接关闭详细信息UI，不进入节点
+    RemoveFromParent();
 }

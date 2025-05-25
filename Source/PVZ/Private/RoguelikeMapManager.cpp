@@ -1,5 +1,6 @@
 #include "RoguelikeMapManager.h"
 #include "Engine/World.h"
+#include "RoguelikeCharacter.h"
 #include "Kismet/GameplayStatics.h"
 
 ARoguelikeMapManager::ARoguelikeMapManager()
@@ -55,10 +56,51 @@ void ARoguelikeMapManager::GenerateMap()
         ConnectLayerNodes(i);
     }
 
+    // 设置每层第一列节点为可访问
+    for (int32 i = 0; i < MapLayers.Num(); i++)
+    {
+        if (MapLayers[i].Columns.Num() > 0)
+        {
+            for (AMapNode* Node : MapLayers[i].Columns[0].Nodes)
+            {
+                Node->bIsEnterable = true;
+            }
+        }
+    }
+    
     // 设置起始节点为当前节点
     if (MapLayers.Num() > 0 && MapLayers[0].Columns.Num() > 0 && MapLayers[0].Columns[0].Nodes.Num() > 0)
     {
         SetCurrentNode(MapLayers[0].Columns[0].Nodes[0]);
+    }
+
+    // 标记每层最后一列的节点
+    for (int32 i = 0; i < MapLayers.Num(); i++)
+    {
+        FMapLayer& Layer = MapLayers[i];
+        if (Layer.Columns.Num() > 0)
+        {
+            // 获取最后一列
+            FMapColumn& LastColumn = Layer.Columns.Last();
+            for (AMapNode* Node : LastColumn.Nodes)
+            {
+                if (Node)
+                {
+                    Node->bIsLastNodeInLayer = true;
+                }
+            }
+        }
+    }
+
+    //获取玩家摄像机
+    ARoguelikeCharacter* Character = Cast<ARoguelikeCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+    if (Character)
+    {
+        Character->MapManager = this;
+        Character->SetupLayerBounds(MapLayers);
+        
+        // 初始设置为第一层
+        Character->MoveToLayer(0, 0.0f); // 无过渡动画
     }
 }
 
@@ -132,7 +174,8 @@ void ARoguelikeMapManager::GenerateLayer(int32 LayerIndex)
             if (NewNode)
             {
                 // 记录节点所属的列
-                NewNode->Column = col; // 设置列号
+                NewNode->ColumnIndex = col; // 设置列号
+                NewNode->LayerIndex = LayerIndex; // 设置层号
                 Layer.Columns[col].Nodes.Add(NewNode);
             }
         }
@@ -383,6 +426,8 @@ void ARoguelikeMapManager::ConnectNodes(AMapNode* FromNode, AMapNode* ToNode)
 {
     if (FromNode && ToNode)
     {
+        FromNode->ConnectedNodes.AddUnique(ToNode);// 添加到当前节点的连接列表
+        
         FNodeConnections& Connections = NodeConnections.FindOrAdd(FromNode);
         Connections.ConnectedNodes.AddUnique(ToNode);
         
@@ -417,8 +462,10 @@ void ARoguelikeMapManager::SetCurrentNode(AMapNode* Node)
 // 激活节点
 bool ARoguelikeMapManager::ActivateNode(AMapNode* NodeToActivate)
 {
-    // 检查节点是否可达
-    if (CurrentNode && NodeConnections.Contains(CurrentNode))
+    // 检查节点是否可达并可访问
+    if (CurrentNode && NodeConnections.Contains(CurrentNode) &&
+       NodeConnections[CurrentNode].ConnectedNodes.Contains(NodeToActivate) &&
+       NodeToActivate->bIsEnterable)
     {
         if (NodeConnections[CurrentNode].ConnectedNodes.Contains(NodeToActivate))
         {
@@ -507,6 +554,69 @@ void ARoguelikeMapManager::UpdateConnectionVisuals(AMapNode* Node)
         if (Connection)
         {
             Connection->SetActive(bActive);
+        }
+    }
+}
+
+// 获取与指定节点同一列的所有节点
+void ARoguelikeMapManager::GetNodesInSameColumn(AMapNode* Node, TArray<AMapNode*>& OutNodes)
+{
+    OutNodes.Empty();
+    if (!Node)
+        return;
+
+    int32 LayerIndex = Node->LayerIndex;
+    int32 ColumnIndex = Node->ColumnIndex;
+    
+    // 检查LayerIndex和ColumnIndex是否有效
+    if (LayerIndex >= 0 && LayerIndex < MapLayers.Num())
+    {
+        const FMapLayer& Layer = MapLayers[LayerIndex];
+        if (ColumnIndex >= 0 && ColumnIndex < Layer.Columns.Num())
+        {
+            // 只获取同一层级同列的节点
+            OutNodes = Layer.Columns[ColumnIndex].Nodes;
+        }
+    }
+}
+
+
+// 隐藏与指定节点相关的连接
+void ARoguelikeMapManager::HideConnectionsForNode(AMapNode* Node)
+{
+    if (!Node)
+        return;
+        
+    // 处理从该节点出发的所有连接
+    if (VisualConnections.Contains(Node))
+    {
+        FNodeVisualConnections& NodeVisuals = VisualConnections[Node];
+        for (auto& Pair : NodeVisuals.Connections)
+        {
+            ANodeConnection* Connection = Pair.Value;
+            if (Connection)
+            {
+                Connection->SetActorHiddenInGame(true);
+                Connection->SetActorEnableCollision(false);
+            }
+        }
+    }
+    
+    // 处理指向该节点的所有连接
+    for (auto& VisualPair : VisualConnections)
+    {
+        AMapNode* FromNode = VisualPair.Key;
+        FNodeVisualConnections& NodeVisuals = VisualPair.Value;
+        
+        // 检查是否有连接到达目标节点
+        if (NodeVisuals.Connections.Contains(Node))
+        {
+            ANodeConnection* Connection = NodeVisuals.Connections[Node];
+            if (Connection)
+            {
+                Connection->SetActorHiddenInGame(true);
+                Connection->SetActorEnableCollision(false);
+            }
         }
     }
 }

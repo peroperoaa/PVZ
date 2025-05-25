@@ -37,10 +37,13 @@ public:
 
 	UPROPERTY(meta = (BindWidget))
 	class UTextBlock* ConfirmButtonText;
+
+	UPROPERTY(meta = (BindWidget))
+	class UButton* ExitButton;
     
 	// 初始化控件
 	virtual void NativeConstruct() override;
-    
+	
 	// 设置关联的节点
 	UFUNCTION(BlueprintCallable, Category = "UI")
 	void SetNode(AMapNode* InNode);
@@ -53,4 +56,7 @@ private:
 	// 确认按钮点击事件
 	UFUNCTION()
 	void OnConfirmButtonClicked();
+
+	UFUNCTION()
+	void OnExitButtonClicked();
 };

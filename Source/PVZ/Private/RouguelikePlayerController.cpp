@@ -92,21 +92,37 @@ void ARouguelikePlayerController::OnMouseMoved(const FInputActionValue& Value)
 
 void ARouguelikePlayerController::ClampCameraPosition()
 {
-    if (CachedCharacter)
+    if (CachedCharacter && CachedCharacter->LayerBounds.IsValidIndex(CachedCharacter->CurrentLayerIndex))
     {
+        // 获取当前层的边界
+        FBox CurrentLayerBounds = CachedCharacter->LayerBounds[CachedCharacter->CurrentLayerIndex];
+        float MinX = CurrentLayerBounds.Min.X;
+        float MaxX = CurrentLayerBounds.Max.X;
+        
         // 获取当前摄像机位置
         FVector CurrentLocation = CachedCharacter->GetCameraLocation();
         
-        // 限制X坐标在指定范围内
-        if (CurrentLocation.X < MinCameraX)
+        // 打印边界信息用于调试
+        UE_LOG(LogTemp, Display, TEXT("摄像机位置X: %f, 当前层边界: [%f, %f]"), 
+            CurrentLocation.X, MinX, MaxX);
+            
+        // 限制X坐标在当前层边界内
+        bool bNeedsUpdate = false;
+        if (CurrentLocation.X < MinX)
         {
-            CurrentLocation.X = MinCameraX;
-            CachedCharacter->SetCameraLocation(CurrentLocation);
+            CurrentLocation.X = MinX;
+            bNeedsUpdate = true;
         }
-        else if (CurrentLocation.X > MaxCameraX)
+        else if (CurrentLocation.X > MaxX)
         {
-            CurrentLocation.X = MaxCameraX;
-            CachedCharacter->SetCameraLocation(CurrentLocation);
+            CurrentLocation.X = MaxX;
+            bNeedsUpdate = true;
+        }
+        
+        // 仅在需要修正时更新摄像机位置
+        if (bNeedsUpdate)
+        {
+            CachedCharacter->SetCameraPositionX(CurrentLocation.X);
         }
     }
 }

@@ -33,6 +33,9 @@ void UNodeUIWidget::SetNode(AMapNode* InNode)
 			NodeInfoText->SetText(FText::FromString(NodeTypeString));
 		}
 	}
+	
+	// 设置节点可交互状态
+	SetNodeEnterable();
 }
 
 void UNodeUIWidget::OnActionButtonClicked()
@@ -54,6 +57,10 @@ void UNodeUIWidget::UpdateNodeState()
 		return;
     
 	// 根据节点状态更新UI
+	if (CurrentNode->bIsEnterable)
+	{
+		SetNodeEnterable();
+	}
 	if (CurrentNode->bIsDisabled)
 	{
 		// 例如：禁用按钮，改变节点外观等
