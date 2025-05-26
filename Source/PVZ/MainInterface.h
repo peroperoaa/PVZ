@@ -12,6 +12,13 @@ UCLASS()
 class PVZ_API UMainInterface : public UUserWidget
 {
 	GENERATED_BODY()
+public:
+	UPROPERTY(BlueprintReadWrite)
+	int32 FertilizerNum = 0;
+
+	UPROPERTY(BlueprintReadWrite)
+	int32 Money = 0;
+
 protected:
 	virtual bool Initialize() override;
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
