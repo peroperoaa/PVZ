@@ -10,7 +10,7 @@ class UBoxComponent;
 class UPaperSpriteComponent;
 class UProjectileMovementComponent;
 
-//子弹伤害需要在实例类中实现
+//子类构造函数需设置ProjectileID然后调用Init()函数
 UCLASS()
 class PVZ_API APlantProjectileBase : public AActor
 {
@@ -40,10 +40,12 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float Damage;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	int32 ProjectileID;
+
 	UFUNCTION()
 	void BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
-
 	UFUNCTION(BlueprintCallable)
-	void Init(float InDamage, AActor* InOwner);
+	bool Init();
 };

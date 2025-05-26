@@ -62,19 +62,19 @@ public:
 
 	//计算伤害数值，一般由PlantBase调用，异常返回Damage
 	UFUNCTION(BlueprintCallable)
-	virtual float CalculateOutgoingDamage(float Damage, UZombieStateComponent* SelfStateComponent);
+	virtual float CalculateOutgoingDamage(float Damage);
 
 	//计算受到伤害,一般由PlantBase调用，异常返回Damage,防御力减伤公式为x/(x + 600)，其中x为防御力
 	UFUNCTION(BlueprintCallable)
-	virtual float CalculateReceiveDamage(float Damage, UZombieStateComponent* SelfStateComponent);
+	virtual float CalculateReceiveDamage(float Damage);
 
 	//获取当前最大生命值，异常则返回-1
 	UFUNCTION(BlueprintCallable)
-	virtual float GetCurrentMaxHealth(UZombieStateComponent* SelfStateComponent);
+	virtual float GetCurrentMaxHealth(float InMaxHealth);
 
 	//获取当前攻击冷却时间，异常则返回-1，需要在实现
-	//UFUNCTION(BlueprintCallable)
-	//virtual float GetCurrentAttackInterval(UZombieStateComponent* SelfStateComponent);
+	UFUNCTION(BlueprintCallable)
+	virtual float GetCurrentAttackInterval(float BaseAttackInterval);
 
 	//传入奇物，需要再实现
 	//UFUNCTION(BlueprintCallable)

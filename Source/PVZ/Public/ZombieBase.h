@@ -6,8 +6,8 @@
 #include "PaperZDCharacter.h"
 #include "ZombieBase.generated.h"
 
-class UZombieStateComponent;
 class UZombieBuffComponent;
+class UZombieStateComponent;
 class UPlantHealthBaseComponent;
 
 /**
@@ -70,12 +70,12 @@ public:
 		封装自PlantHealthBaseComponent的函数
 	*/
 
-	//回复生命值，传入增加的生命值
-	UFUNCTION(BlueprintCallable)
-	virtual void AddHealth(float Value);
+	////回复生命值，传入增加的生命值
+	//UFUNCTION(BlueprintCallable)
+	//virtual void AddHealth(float Value);
 
-	//回复生命值百分比
-	UFUNCTION(BlueprintCallable)
-	virtual void AddHealthPercent(float Rate);
+	////回复生命值百分比
+	//UFUNCTION(BlueprintCallable)
+	//virtual void AddHealthPercent(float Rate);
 
 };

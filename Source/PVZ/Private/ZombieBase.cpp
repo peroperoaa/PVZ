@@ -5,14 +5,19 @@
 #include "ZombieStateComponent.h"
 #include "PlantHealthBaseComponent.h"
 #include "ZombieBuffComponent.h"
+#include "kismet/GameplayStatics.h"
+#include "NodeGameMode.h"
 
 AZombieBase::AZombieBase()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	BuffComponent = CreateDefaultSubobject<UZombieBuffComponent>(TEXT("BuffComponent"));
 	HealthComponent = CreateDefaultSubobject<UPlantHealthBaseComponent>(TEXT("HealthComponent"));
 	StateComponent = CreateDefaultSubobject<UZombieStateComponent>(TEXT("StateComponent"));
+	AGameModeBase* GameMode = UGameplayStatics::GetGameMode(GetWorld());
+	ANodeGameMode* NodeGameMode = Cast<ANodeGameMode>(GameMode);
+	BuffComponent = NodeGameMode ? NodeGameMode->ZombieBuffComponent : nullptr;
+	ZombieID = 0;
 }
 
 bool AZombieBase::Init()
@@ -21,7 +26,8 @@ bool AZombieBase::Init()
 	{
 		if (StateComponent->Init(ZombieID))
 		{
-			HealthComponent->Init(StateComponent->BaseMaxHealth);
+			if (BuffComponent) HealthComponent->Init(BuffComponent->GetCurrentMaxHealth(StateComponent->BaseMaxHealth));
+			else HealthComponent->Init(StateComponent->BaseMaxHealth);
 			return true;
 		}
 		else
@@ -45,7 +51,7 @@ void AZombieBase::BeAttacked(float Damage)
 		UE_LOG(LogTemp, Warning, TEXT("AZombieBase::CalculateReceiveDamage : BuffComponent or StateComponent is null"))
 	}
 	else
-		FinalDamage = BuffComponent->CalculateReceiveDamage(Damage, StateComponent);
+		FinalDamage = BuffComponent->CalculateReceiveDamage(Damage);
 	if (!HealthComponent)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("AZombieBase::BeAttacked : HealthComponent is null"));
@@ -62,30 +68,30 @@ float AZombieBase::CalculateOutgoingDamage(float Damage)
 {
 	if (!BuffComponent || !StateComponent)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("AZomebieBase::CalculateOutgoingDamage : BuffComponent or StateComponent is null"));
+		UE_LOG(LogTemp, Warning, TEXT("AZombieBase::CalculateOutgoingDamage : BuffComponent or StateComponent is null"));
 		return Damage;
 	}
-	return BuffComponent->CalculateOutgoingDamage(Damage, StateComponent);
+	return BuffComponent->CalculateOutgoingDamage(Damage);
 }
 
-void AZombieBase::AddHealth(float Value)
-{
-	if (!HealthComponent)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("APlantBase::AddHealth : HealthComponent is null"));
-		return;
-	}
-	HealthComponent->AddHealth(Value);
-}
-
-void AZombieBase::AddHealthPercent(float Rate)
-{
-	if (!HealthComponent)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("APlantBase::AddHealthPercent : HealthComponent is null"));
-		return;
-	}
-	HealthComponent->AddHealthPercent(Rate);
-}
+//void AZombieBase::AddHealth(float Value)
+//{
+//	if (!HealthComponent)
+//	{
+//		UE_LOG(LogTemp, Warning, TEXT("APlantBase::AddHealth : HealthComponent is null"));
+//		return;
+//	}
+//	HealthComponent->AddHealth(Value);
+//}
+//
+//void AZombieBase::AddHealthPercent(float Rate)
+//{
+//	if (!HealthComponent)
+//	{
+//		UE_LOG(LogTemp, Warning, TEXT("APlantBase::AddHealthPercent : HealthComponent is null"));
+//		return;
+//	}
+//	HealthComponent->AddHealthPercent(Rate);
+//}
 
 

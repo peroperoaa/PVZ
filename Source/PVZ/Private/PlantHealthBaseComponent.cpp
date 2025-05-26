@@ -82,29 +82,31 @@ void UPlantHealthBaseComponent::BeAttacked(float FinalDamage)
 	}
 }
 
-void UPlantHealthBaseComponent::AddHealth(float Value)
+void UPlantHealthBaseComponent::Init(float MaxHealth)
 {
-	if(Value < 0)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("UPlantHealthBaseComponent::AddHealth : Value is less than 0"));
-		return;
-	}
-	CurrentHealth = FMath::Min(CurrentHealth + Value, CalculatedMaxHealth);
-}
-
-void UPlantHealthBaseComponent::AddHealthPercent(float Rate)
-{
-	if (Rate < 0)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("UPlantHealthBaseComponent::AddHealthPercent : Rate is less than 0"));
-		return;
-	}
-	CurrentHealth = FMath::Min(CurrentHealth + Rate * CalculatedMaxHealth, CalculatedMaxHealth);
+	CurrentHealth = CalculatedMaxHealth = MaxHealth;
 }
 
 
-void UPlantHealthBaseComponent::Init(float BaseMaxHealth)
-{
-	CurrentHealth = CalculatedMaxHealth = BaseMaxHealth;
-}
+//void UPlantHealthBaseComponent::AddHealth(float Value)
+//{
+//	if(Value < 0)
+//	{
+//		UE_LOG(LogTemp, Warning, TEXT("UPlantHealthBaseComponent::AddHealth : Value is less than 0"));
+//		return;
+//	}
+//	CurrentHealth = FMath::Min(CurrentHealth + Value, CalculatedMaxHealth);
+//}
+//
+//void UPlantHealthBaseComponent::AddHealthPercent(float Rate)
+//{
+//	if (Rate < 0)
+//	{
+//		UE_LOG(LogTemp, Warning, TEXT("UPlantHealthBaseComponent::AddHealthPercent : Rate is less than 0"));
+//		return;
+//	}
+//	CurrentHealth = FMath::Min(CurrentHealth + Rate * CalculatedMaxHealth, CalculatedMaxHealth);
+//}
+
+
 

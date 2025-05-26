@@ -3,6 +3,8 @@
 
 #include "Zombie.h"
 #include "PlantBase.h"
+#include "ZombieBuffComponent.h"
+#include "ZombieStateComponent.h"
 
 AZombie::AZombie()
 {
@@ -11,7 +13,11 @@ AZombie::AZombie()
 	Init();
 	bIsNeedAttack = false;
 	bIsDead = false;
-	AttackInterval = .5f;
+	AttackInterval = 0.f;
+	if (StateComponent)
+		if (BuffComponent)
+			AttackInterval = BuffComponent->GetCurrentAttackInterval(StateComponent->BaseAttackInterval);
+		else AttackInterval = StateComponent->BaseAttackInterval;
 	AttackingPlant = nullptr;
 	UCapsuleComponent* SelfCapsuleComponent = GetCapsuleComponent();
 	if (SelfCapsuleComponent)

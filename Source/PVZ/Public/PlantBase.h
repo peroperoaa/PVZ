@@ -23,8 +23,8 @@ public:
 
 	APlantBase();
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Logic")
-	UBuffComponent* BuffComponent;
+	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Logic")
+	//UBuffComponent* BuffComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Logic")
 	UStateComponent* StateComponent;
@@ -48,39 +48,35 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual void BeAttacked(float Damage);
 
-	//添加奇物
-	UFUNCTION(BlueprintCallable)
-	virtual void AddBuff();
-
-	//该函数会在AddBuff（添加奇物）中被调用，用于实现需要实时同步Buff组件中数值的新增组件的逻辑时重写(如Attack组件中存储的实时攻击力需在此处更新，代码可参考AddBuff)
-	UFUNCTION(BlueprintCallable)
-	virtual void BuffUpdateOtherComponents();
-
 	//死亡逻辑，需要再实现
 	UFUNCTION(BlueprintCallable)
 	virtual void Dead();
-
-	/*
-		封装自BuffComponent的函数
-	*/
-
-	//计算对僵尸伤害,传入原始伤害，返回经过计算的伤害
-	UFUNCTION(BlueprintCallable)
-	virtual float CalculateOutgoingDamage(float Damage);
 
 	//获取当前攻击间隔
 	UFUNCTION(BlueprintCallable)
 	virtual float GetCurrentAttackInterval();
 
+	////计算对僵尸伤害,传入原始伤害，返回经过计算的伤害
+	//UFUNCTION(BlueprintCallable)
+	//virtual float CalculateOutgoingDamage(float Damage);
+
+	////添加奇物
+	//UFUNCTION(BlueprintCallable)
+	//virtual void AddBuff();
+
+	////该函数会在AddBuff（添加奇物）中被调用，用于实现需要实时同步Buff组件中数值的新增组件的逻辑时重写(如Attack组件中存储的实时攻击力需在此处更新，代码可参考AddBuff)
+	//UFUNCTION(BlueprintCallable)
+	//virtual void BuffUpdateOtherComponents();
+
 	/*
 		封装自PlantHealthBaseComponent的函数
 	*/
 
-	//回复生命值，传入增加的生命值
-	UFUNCTION(BlueprintCallable)
-	virtual void AddHealth(float Value);
+	////回复生命值，传入增加的生命值
+	//UFUNCTION(BlueprintCallable)
+	//virtual void AddHealth(float Value);
 
-	//回复生命值百分比
-	UFUNCTION(BlueprintCallable)
-	virtual void AddHealthPercent(float Rate);
+	////回复生命值百分比
+	//UFUNCTION(BlueprintCallable)
+	//virtual void AddHealthPercent(float Rate);
 };

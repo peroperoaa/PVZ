@@ -56,27 +56,27 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float ExtraCritDamage;
 
-	//计算Buff组件数值
-	UFUNCTION(BlueprintCallable)
-	void CalculateBuffValue();
+	////计算Buff组件数值
+	//UFUNCTION(BlueprintCallable)
+	//void CalculateBuffValue();
 
 	//计算伤害数值，一般由PlantBase调用，异常返回Damage
 	UFUNCTION(BlueprintCallable)
-	virtual float CalculateOutgoingDamage(float Damage, UStateComponent* SelfStateComponent);
+	virtual float CalculateOutgoingDamage(float Damage);
 
 	//计算受到伤害,一般由PlantBase调用，异常返回Damage,防御力减伤公式为x/(x + 600)，其中x为防御力
 	UFUNCTION(BlueprintCallable)
-	virtual float CalculateReceiveDamage(float Damage, UStateComponent* SelfStateComponent);
+	virtual float CalculateReceiveDamage(float Damage);
 
 	//获取当前最大生命值，异常则返回-1
 	UFUNCTION(BlueprintCallable)
-	virtual float GetCurrentMaxHealth(UStateComponent* SelfStateComponent);
+	virtual float GetCurrentMaxHealth(float BaseMaxHealth);
 
 	//获取当前攻击冷却时间，异常则返回-1
 	UFUNCTION(BlueprintCallable)
-	virtual float GetCurrentAttackInterval(UStateComponent* SelfStateComponent);
+	virtual float GetCurrentAttackInterval(float BaseAttackInterval);
 
-	//传入奇物
-	UFUNCTION(BlueprintCallable)
-	virtual void AddBuff();
+	////传入奇物
+	//UFUNCTION(BlueprintCallable)
+	//virtual void AddBuff();
 };

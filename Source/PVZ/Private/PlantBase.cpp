@@ -5,12 +5,13 @@
 #include "BuffComponent.h"
 #include "StateComponent.h"
 #include "PlantHealthBaseComponent.h"
+#include "NodeGameMode.h"
+#include "Kismet/GameplayStatics.h"
 
 APlantBase::APlantBase()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	BuffComponent = CreateDefaultSubobject<UBuffComponent>(TEXT("BuffComponent"));
 	HealthComponent = CreateDefaultSubobject<UPlantHealthBaseComponent>(TEXT("HealthComponent"));
 	StateComponent = CreateDefaultSubobject<UStateComponent>(TEXT("StateComponent"));
 	PlantID = 0;
@@ -22,7 +23,11 @@ bool APlantBase::Init()
 	{
 		if (StateComponent->Init(PlantID))
 		{
-			HealthComponent->Init(StateComponent->BaseMaxHealth);
+			AGameModeBase* GameMode = UGameplayStatics::GetGameMode(GetWorld());
+			ANodeGameMode* NodeGameMode = Cast<ANodeGameMode>(GameMode);
+			UBuffComponent* BuffComponent = NodeGameMode ? NodeGameMode->PlantBuffComponent : nullptr;
+			if (BuffComponent) HealthComponent->Init(BuffComponent->GetCurrentMaxHealth(StateComponent->BaseMaxHealth));
+			else HealthComponent->Init(StateComponent->BaseMaxHealth);
 			return true;
 		}
 		else
@@ -38,25 +43,24 @@ bool APlantBase::Init()
 	}
 }
 
-float APlantBase::CalculateOutgoingDamage(float Damage)
-{
-	if (!BuffComponent || !StateComponent)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("APlantBase::CalculateOutgoingDamage : BuffComponent or StateComponent is null"));
-		return Damage;
-	}
-	return BuffComponent->CalculateOutgoingDamage(Damage, StateComponent);
-}
+//float APlantBase::CalculateOutgoingDamage(float Damage)
+//{
+//	if (!BuffComponent || !StateComponent)
+//	{
+//		UE_LOG(LogTemp, Warning, TEXT("APlantBase::CalculateOutgoingDamage : BuffComponent or StateComponent is null"));
+//		return Damage;
+//	}
+//	return BuffComponent->CalculateOutgoingDamage(Damage);
+//}
 
 void APlantBase::BeAttacked(float Damage)
 {
 	float FinalDamage = Damage;
-	if (!BuffComponent || !StateComponent)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("APlantBase::CalculateReceiveDamage : BuffComponent or StateComponent is null"))
-	}
-	else
-		FinalDamage = BuffComponent->CalculateReceiveDamage(Damage, StateComponent);
+	AGameModeBase* GameMode = UGameplayStatics::GetGameMode(GetWorld());
+	ANodeGameMode* NodeGameMode = Cast<ANodeGameMode>(GameMode);
+	UBuffComponent* BuffComponent = NodeGameMode ? NodeGameMode->PlantBuffComponent : nullptr;
+	if(BuffComponent)
+		FinalDamage = BuffComponent->CalculateReceiveDamage(Damage);
 	if (!HealthComponent)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("APlantBase::BeAttacked : HealthComponent is null"));
@@ -65,58 +69,60 @@ void APlantBase::BeAttacked(float Damage)
 	HealthComponent->BeAttacked(FinalDamage);
 }
 
-void APlantBase::AddBuff()
+float APlantBase::GetCurrentAttackInterval()
 {
-	if (!BuffComponent)
+	AGameModeBase* GameMode = UGameplayStatics::GetGameMode(GetWorld());
+	ANodeGameMode* NodeGameMode = Cast<ANodeGameMode>(GameMode);
+	UBuffComponent* BuffComponent = NodeGameMode ? NodeGameMode->PlantBuffComponent : nullptr;
+	if (!BuffComponent || !StateComponent)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("APlantBase::AddBuff : BuffComponent is null"));
-		return;
+		UE_LOG(LogTemp, Warning, TEXT("APlantBase::GetCurrentAttackInterval : BuffComponent or StateComponent is null"));
+		return -1;
 	}
-	BuffComponent->AddBuff();
-	if (!StateComponent || !HealthComponent)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("APlantBase::AddBuff : StateComponent or HealthComponent is null"));
-		return;
-	}
-	HealthComponent->SetCurrentMaxHealth(BuffComponent->GetCurrentMaxHealth(StateComponent));
-}
-
-void APlantBase::BuffUpdateOtherComponents()
-{
-
+	return BuffComponent->GetCurrentAttackInterval(StateComponent->BaseAttackInterval);
 }
 
 void APlantBase::Dead()
 {
 }
 
-void APlantBase::AddHealth(float Value)
-{
-	if (!HealthComponent)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("APlantBase::AddHealth : HealthComponent is null"));
-		return;
-	}
-	HealthComponent->AddHealth(Value);
-}
+//void APlantBase::AddBuff()
+//{
+//	if (!BuffComponent)
+//	{
+//		UE_LOG(LogTemp, Warning, TEXT("APlantBase::AddBuff : BuffComponent is null"));
+//		return;
+//	}
+//	BuffComponent->AddBuff();
+//	if (!StateComponent || !HealthComponent)
+//	{
+//		UE_LOG(LogTemp, Warning, TEXT("APlantBase::AddBuff : StateComponent or HealthComponent is null"));
+//		return;
+//	}
+//	HealthComponent->SetCurrentMaxHealth(BuffComponent->GetCurrentMaxHealth(StateComponent));
+//}
 
-void APlantBase::AddHealthPercent(float Rate)
-{
-	if (!HealthComponent)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("APlantBase::AddHealthPercent : HealthComponent is null"));
-		return;
-	}
-	HealthComponent->AddHealthPercent(Rate);
-}
+//void APlantBase::BuffUpdateOtherComponents()
+//{
+//
+//}
 
-
-float APlantBase::GetCurrentAttackInterval()
-{
-	if (!BuffComponent || !StateComponent)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("APlantBase::GetCurrentAttackInterval : BuffComponent or StateComponent is null"));
-		return -1;
-	}
-	return BuffComponent->GetCurrentAttackInterval(StateComponent);
-}
+//void APlantBase::AddHealth(float Value)
+//{
+//	if (!HealthComponent)
+//	{
+//		UE_LOG(LogTemp, Warning, TEXT("APlantBase::AddHealth : HealthComponent is null"));
+//		return;
+//	}
+//	HealthComponent->AddHealth(Value);
+//}
+//
+//void APlantBase::AddHealthPercent(float Rate)
+//{
+//	if (!HealthComponent)
+//	{
+//		UE_LOG(LogTemp, Warning, TEXT("APlantBase::AddHealthPercent : HealthComponent is null"));
+//		return;
+//	}
+//	HealthComponent->AddHealthPercent(Rate);
+//}

@@ -41,15 +41,15 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual void BeAttacked(float FinalDamage);
 
-	//回复生命值，传入增加的生命值
-	UFUNCTION(BlueprintCallable)
-	virtual void AddHealth(float Value);
-
 	//初始化Health组件
 	UFUNCTION(BlueprintCallable)
-	virtual void Init(float BaseMaxHealth);
+	virtual void Init(float MaxHealth);
 
-	//回复最大生命值百分比
-	UFUNCTION(BlueprintCallable)
-	virtual void AddHealthPercent(float Rate);
+	////回复生命值，传入增加的生命值
+	//UFUNCTION(BlueprintCallable)
+	//virtual void AddHealth(float Value);
+
+	////回复最大生命值百分比
+	//UFUNCTION(BlueprintCallable)
+	//virtual void AddHealthPercent(float Rate);
 };

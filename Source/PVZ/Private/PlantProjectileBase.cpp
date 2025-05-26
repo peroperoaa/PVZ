@@ -3,6 +3,11 @@
 #include "PaperSpriteComponent.h"
 #include "ZombieBase.h"
 #include "PlantBase.h"
+#include "ProjectileState.h"
+#include "Engine/DataTable.h"
+#include "kismet/gameplaystatics.h"
+#include "NodeGameMode.h"
+#include "BuffComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 // Fill out your copyright notice in the Description page of Project Settings.
 
@@ -18,7 +23,8 @@ APlantProjectileBase::APlantProjectileBase()
 	ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovementComponent"));
 	RootComponent = BoxComponent;
 	SpriteComponent->SetupAttachment(BoxComponent);
-	Damage = 20.f;//测试用
+	Damage = 0.f;
+	ProjectileID = 0;
 }
 
 // Called when the game starts or when spawned
@@ -41,21 +47,44 @@ void APlantProjectileBase::BeginOverlap(UPrimitiveComponent* OverlappedComponent
 	if (!Zombie)
 		return;
 	float OutDamage = Damage;
-	AActor* Parent = GetOwner();
-	if (Parent)
+	AGameModeBase* GameModeBase = UGameplayStatics::GetGameMode(GetWorld());
+	if (GameModeBase)
 	{
-		APlantBase* Plant = Cast<APlantBase>(Parent);
-		if (Plant)
-			OutDamage = Plant->CalculateOutgoingDamage(Damage);
+		ANodeGameMode* GameMode = Cast<ANodeGameMode>(GameModeBase);
+		if (GameMode)
+		{
+			UBuffComponent* BuffComponent = GameMode->PlantBuffComponent;
+			if (BuffComponent)
+				OutDamage = BuffComponent->CalculateOutgoingDamage(Damage);
+		}
 	}
 	Zombie->BeAttacked(OutDamage);
 	BoxComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	SpriteComponent->SetVisibility(false);
 	Destroy();
 }
-//待优化
-void APlantProjectileBase::Init(float InDamage, AActor* InOwner)
+
+bool APlantProjectileBase::Init()
 {
-	Damage = InDamage;
-	SetOwner(InOwner);
+	if (!ProjectileID) return false;
+	UDataTable* DataTable = nullptr;
+	static ConstructorHelpers::FObjectFinder<UDataTable> TableType(TEXT("/Script/Engine.DataTable'/Game/DataTables/Plant/DT_ProjectileState.DT_ProjectileState'"));
+	if (TableType.Succeeded())
+	{
+		DataTable = TableType.Object;
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("APlantProjectileBase::Init: Failed to load DataTable for ProjectileState!"));
+		return false;
+	}
+	FName RowName = FName(*FString::Printf(TEXT("Projectile_%d"), ProjectileID));
+	static const FString ContextString(TEXT("AProjectileBase::Init"));
+	if (DataTable)
+	{
+		FProjectileState* ProjectileData = DataTable->FindRow<FProjectileState>(RowName, ContextString);
+		Damage = ProjectileData->BaseDamage;
+		return true;
+	}
+	return false;
 }

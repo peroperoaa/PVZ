@@ -41,22 +41,22 @@ void UBuffComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 	// ...
 }
 
-void UBuffComponent::CalculateBuffValue()
-{
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("UBuffComponent::CalculateBuffValue : 计算Buff组件数值"));
-}
+//void UBuffComponent::CalculateBuffValue()
+//{
+//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("UBuffComponent::CalculateBuffValue : 计算Buff组件数值"));
+//}
 
-float UBuffComponent::CalculateOutgoingDamage(float Damage, UStateComponent* SelfStateComponent)
+float UBuffComponent::CalculateOutgoingDamage(float Damage)
 {
-	if (!SelfStateComponent)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("UBuffComponent::CalculateOutgoingDamage : SelfStateComponent is null"));
-		return Damage;
-	}
+	//if (!SelfStateComponent)
+	//{
+	//	UE_LOG(LogTemp, Warning, TEXT("UBuffComponent::CalculateOutgoingDamage : SelfStateComponent is null"));
+	//	return Damage;
+	//}
 	float FinalAttack = (Damage + ExtraAttack) * (1 + AttackRate);
-	float TotalCritRate = SelfStateComponent->BaseCritRate + ExtraCritRate;
+	float TotalCritRate = ExtraCritRate;
 	float FinalCritRate = FMath::Clamp(TotalCritRate, 0.f, 1.f);
-	float FinalCritDamage = SelfStateComponent->BaseCritDamage + ExtraCritDamage;
+	float FinalCritDamage = ExtraCritDamage;
 	bool bIsCrit = FMath::FRand() < FinalCritRate;
 	float FinalDamage = 0.f;
 	if (bIsCrit)
@@ -66,41 +66,31 @@ float UBuffComponent::CalculateOutgoingDamage(float Damage, UStateComponent* Sel
 	return FinalAttack;
 }
 
-float UBuffComponent::CalculateReceiveDamage(float Damage, UStateComponent* SelfStateComponent)
+float UBuffComponent::CalculateReceiveDamage(float Damage)
 {
-	if (!SelfStateComponent)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("UBuffComponent::CalculateReceiveDamage : SelfStateComponent is null"));
-		return Damage;
-	}
-	float FinalDefense = SelfStateComponent->BaseDefense + ExtraDefense;
+	//if (!SelfStateComponent)
+	//{
+	//	UE_LOG(LogTemp, Warning, TEXT("UBuffComponent::CalculateReceiveDamage : SelfStateComponent is null"));
+	//	return Damage;
+	//}
+	float FinalDefense = ExtraDefense;
 	float AfterDefenseCalculatedDamage = Damage * (1 - FinalDefense / (FinalDefense + 600));
 	float FinalDamage = AfterDefenseCalculatedDamage * (1 - FMath::Clamp(DamageReductionRate, 0.f, 1.f));
 	return FinalDamage;
 }
 
-float UBuffComponent::GetCurrentMaxHealth(UStateComponent* SelfStateComponent)
+float UBuffComponent::GetCurrentMaxHealth(float BaseMaxHealth)
 {
-	if (!SelfStateComponent)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("UBuffComponent::GetCurrentMaxHealth : SelfStateComponent is null"));
-		return -1;
-	}
-	return SelfStateComponent->BaseMaxHealth + ExtraMaxHealth;
+	return BaseMaxHealth + ExtraMaxHealth;
 }
 
-float UBuffComponent::GetCurrentAttackInterval(UStateComponent* SelfStateComponent)
+float UBuffComponent::GetCurrentAttackInterval(float BaseAttackInterval)
 {
-	if (!SelfStateComponent)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("UBuffComponent::GetCurrentAttackInterval : SelfStateComponent is null"));
-		return -1;
-	}
-	return SelfStateComponent->BaseAttackInterval / AttackSpeedRate;
+	return BaseAttackInterval / AttackSpeedRate;
 }
 
-void UBuffComponent::AddBuff()
-{
-	UE_LOG(LogTemp, Warning, TEXT("UBuffComponent::AddBuff : Buff组件添加Buff"));
-}
+//void UBuffComponent::AddBuff()
+//{
+//	UE_LOG(LogTemp, Warning, TEXT("UBuffComponent::AddBuff : Buff组件添加Buff"));
+//}
 

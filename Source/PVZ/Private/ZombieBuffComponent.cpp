@@ -17,6 +17,7 @@ UZombieBuffComponent::UZombieBuffComponent()
 	ExtraCritRate = 0.f;
 	ExtraCritDamage = 0.f;
 	ExtraMoveSpeed = 0.f;
+	AttackRate = 1.f;
 	// ...
 }
 
@@ -39,46 +40,35 @@ void UZombieBuffComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	// ...
 }
 
-float UZombieBuffComponent::CalculateOutgoingDamage(float Damage, UZombieStateComponent* SelfStateComponent)
+float UZombieBuffComponent::CalculateOutgoingDamage(float Damage)
 {
-	if (!SelfStateComponent)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("UZombieBuffComponent::CalculateOutgoingDamage : SelfStateComponent is null"));
-		return Damage;
-	}
 	float FinalAttack = (Damage + ExtraAttack) * (1 + AttackRate);
-	float TotalCritRate = SelfStateComponent->BaseCritRate + ExtraCritRate;
+	float TotalCritRate = ExtraCritRate;
 	float FinalCritRate = FMath::Clamp(TotalCritRate, 0.f, 1.f);
-	float FinalCritDamage = SelfStateComponent->BaseCritDamage + ExtraCritDamage;
+	float FinalCritDamage = ExtraCritDamage;
 	bool bIsCrit = FMath::FRand() < FinalCritRate;
 	float FinalDamage = 0.f;
 	if (bIsCrit)
 		FinalDamage = FinalAttack * (1 + FinalCritDamage);
 	else
 		FinalDamage = FinalAttack;
-	return FinalAttack;
+	return FinalDamage;
 }
 
-float UZombieBuffComponent::CalculateReceiveDamage(float Damage, UZombieStateComponent* SelfStateComponent)
+float UZombieBuffComponent::CalculateReceiveDamage(float Damage)
 {
-	if (!SelfStateComponent)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("UZombieBuffComponent::CalculateReceiveDamage : SelfStateComponent is null"));
-		return Damage;
-	}
-	float FinalDefense = SelfStateComponent->BaseDefense + ExtraDefense;
+	float FinalDefense = ExtraDefense;
 	float AfterDefenseCalculatedDamage = Damage * (1 - FinalDefense / (FinalDefense + 600));
 	float FinalDamage = AfterDefenseCalculatedDamage * (1 - FMath::Clamp(DamageReductionRate, 0.f, 1.f));
 	return FinalDamage;
 }
 
-float UZombieBuffComponent::GetCurrentMaxHealth(UZombieStateComponent* SelfStateComponent)
+float UZombieBuffComponent::GetCurrentMaxHealth(float InBaseMaxHealth)
 {
-	if (!SelfStateComponent)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("UZombieBuffComponent::GetCurrentMaxHealth : SelfStateComponent is null"));
-		return -1;
-	}
-	return SelfStateComponent->BaseMaxHealth + ExtraMaxHealth;
+	return InBaseMaxHealth + ExtraMaxHealth;
 }
 
+float UZombieBuffComponent::GetCurrentAttackInterval(float BaseAttackInterval)
+{
+	return BaseAttackInterval / AttackRate;
+}
