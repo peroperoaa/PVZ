@@ -76,6 +76,10 @@ float APlantBase::GetCurrentAttackInterval()
 	UBuffComponent* BuffComponent = NodeGameMode ? NodeGameMode->PlantBuffComponent : nullptr;
 	if (!BuffComponent || !StateComponent)
 	{
+		if (!BuffComponent)
+			UE_LOG(LogTemp, Warning, TEXT("APlantBase::GetCurrentAttackInterval : BuffComponent is null"))
+		else
+			UE_LOG(LogTemp, Warning, TEXT("APlantBase::GetCurrentAttackInterval : StateComponent is null"))
 		UE_LOG(LogTemp, Warning, TEXT("APlantBase::GetCurrentAttackInterval : BuffComponent or StateComponent is null"));
 		return -1;
 	}

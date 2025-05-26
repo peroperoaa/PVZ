@@ -31,17 +31,17 @@ public:
 
 	virtual void Init(UBuffComponent* PlantComponent, UZombieBuffComponent* ZombieComponent);
 
-	// 植物伤害计算
-	UFUNCTION(BlueprintCallable, Category = "DamageCalculation")
-	float CalculatePlantDamageOutput(float InDamage);
+	//// 植物伤害计算
+	//UFUNCTION(BlueprintCallable, Category = "DamageCalculation")
+	//float CalculatePlantDamageOutput(float InDamage);
 
-	UFUNCTION(BlueprintCallable, Category = "DamageCalculation")
-	float CalculatePlantDamageTaken(float InDamage);
+	//UFUNCTION(BlueprintCallable, Category = "DamageCalculation")
+	//float CalculatePlantDamageTaken(float InDamage);
 
-	// 僵尸伤害计算
-	UFUNCTION(BlueprintCallable, Category = "DamageCalculation")
-	float CalculateZombieDamageOutput(float InDamage);
+	//// 僵尸伤害计算
+	//UFUNCTION(BlueprintCallable, Category = "DamageCalculation")
+	//float CalculateZombieDamageOutput(float InDamage);
 
-	UFUNCTION(BlueprintCallable, Category = "DamageCalculation")
-	float CalculateZombieDamageTaken(float InDamage);
+	//UFUNCTION(BlueprintCallable, Category = "DamageCalculation")
+	//float CalculateZombieDamageTaken(float InDamage);
 };
