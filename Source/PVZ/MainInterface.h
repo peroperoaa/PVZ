@@ -19,6 +19,9 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	int32 Money = 0;
 
+	UFUNCTION()
+	void UpdateAttire(UAttire* AddingAttire);
+
 protected:
 	virtual bool Initialize() override;
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
@@ -33,6 +36,9 @@ private:
 	class UWidgetSwitcher* WidgetSwitcher;
 
 	UPROPERTY(meta = (BindWidget))
+	class UCollectionInterface* UI_CollectionInterface;
+
+	UPROPERTY(meta = (BindWidget))
 	class UButton* CollectionInterfaceButton;
 
 	UFUNCTION()
@@ -43,4 +49,9 @@ private:
 
 	UFUNCTION()
 	void CollectionInterfaceButtonClicked();
+
+	
+
+	UPROPERTY()
+	int32 SwitcherChlidNum = 4;
 };	

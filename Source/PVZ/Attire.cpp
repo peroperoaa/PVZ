@@ -4,6 +4,11 @@
 #include "Attire.h"
 #include "Engine/DataTable.h"
 #include "Components/Button.h"
+#include "Kismet/GameplayStatics.h"
+#include "CollectionInterface.h"
+#include "Blueprint/UserWidget.h"
+#include "Blueprint/WidgetBlueprintLibrary.h" // Include the correct header for GetAllWidgetsOfClass
+
 
 const FAttireInfo& UAttire::GetAttireInfoByAttireId(int32 InAttireId) const
 {
@@ -30,13 +35,16 @@ const FAttireInfo& UAttire::GetAttireInfoByAttireId(int32 InAttireId) const
         return DefaultInfo;
 }
 
-void UAttire::NativeConstruct()
+void UAttire::InitAttire(int32 InAttireId)
 {
-        int32 TargetId = 1;
-        const FAttireInfo& Info = GetAttireInfoByAttireId(TargetId);
+        AttireInfo.AttireId = InAttireId;
+        const FAttireInfo& Info = GetAttireInfoByAttireId(AttireInfo.AttireId);
         // 赋值给你的控件
         AttireInfo = Info;
+}
 
+void UAttire::NativeConstruct()
+{
 }
 
 bool UAttire::Initialize()
@@ -50,7 +58,24 @@ bool UAttire::Initialize()
         return true;
 }
 
+
+
 void UAttire::ButtonClicked()
 {
+        // 查找所有UI_CollectionInterface类型的Widget
+        /*if (GEngine)
+        {
+                GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("AttireId: %d, Name: %s"), AttireInfo.AttireId, *AttireInfo.AttireName));
+        }*/
+        TArray<UUserWidget*> FoundWidgets;
+        UWidgetBlueprintLibrary::GetAllWidgetsOfClass(GetWorld(), FoundWidgets, UCollectionInterface::StaticClass(), false);
 
+        if (FoundWidgets.Num() > 0)
+        {
+                UCollectionInterface* CollectionWidget = Cast<UCollectionInterface>(FoundWidgets.Last());
+                if (CollectionWidget)
+                {
+                        CollectionWidget->SetDisplayInfo(AttireInfo);
+                }
+        }
 }

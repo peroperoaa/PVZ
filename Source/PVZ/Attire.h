@@ -46,6 +46,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	const FAttireInfo& GetAttireInfoByAttireId(int32 InAttireId) const;
 
+	UFUNCTION(BlueprintCallable)
+	void InitAttire(int32 InAttireId);
+
+
 protected:
 	virtual void NativeConstruct() override;
 	virtual bool Initialize() override;
