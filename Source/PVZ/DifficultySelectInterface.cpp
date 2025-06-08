@@ -6,6 +6,9 @@
 #include "Components/ScrollBox.h"
 #include "Components/Widget.h"
 #include "Components/PanelWidget.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
+#include "Kismet/GameplayStatics.h"
+#include "MainInterface.h"
 
 
 bool UDifficultySelectInterface::Initialize()
@@ -75,6 +78,7 @@ void UDifficultySelectInterface::AddDifficultyButtonClicked()
 {
         if (Difficulty >= 9) return;
 	Difficulty++;
+        UpdateDifficulty();
         //ScrollToDifficulty();
 }
 
@@ -82,7 +86,23 @@ void UDifficultySelectInterface::MinusDifficultyButtonClicked()
 {
         if (Difficulty <= 1) return;
         Difficulty--;
+        UpdateDifficulty();
         //ScrollToDifficulty();
+}
+
+void UDifficultySelectInterface::UpdateDifficulty()
+{
+        TArray<UUserWidget*> FoundWidgets;
+        UWidgetBlueprintLibrary::GetAllWidgetsOfClass(GetWorld(), FoundWidgets, UMainInterface::StaticClass(), false);
+
+        if (FoundWidgets.Num() > 0)
+        {
+                UMainInterface* MainWidget = Cast<UMainInterface>(FoundWidgets.Last());
+                if (MainWidget)
+                {
+                        MainWidget->SelectedDifficulty = Difficulty;
+                }
+        }
 }
 
 

@@ -53,6 +53,7 @@ void UCollectionInterface::UpdateAttire(int32 TargetId, UAttire* AddingAttire)
 			if (MainWidget)
 			{
 				MainWidget->UpdateAttire(AddingAttire); 
+				MainWidget->CollectionNum++;
 			}
 		}
 	}

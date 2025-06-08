@@ -47,4 +47,7 @@ private:
 
 	UFUNCTION()
 	void Team4ButtonClicked();
+
+	UFUNCTION()
+	void UpdateSelectedTeam();
 };

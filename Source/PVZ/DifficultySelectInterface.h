@@ -43,5 +43,8 @@ private:
 	UFUNCTION()
 	void MinusDifficultyButtonClicked();
 
+	UFUNCTION()
+	void UpdateDifficulty();
+
 	
 };

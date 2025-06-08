@@ -19,6 +19,18 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	int32 Money = 0;
 
+	UPROPERTY(BlueprintReadWrite)
+	int32 CollectionNum = 0;
+
+	UPROPERTY(BlueprintReadWrite)
+	int32 SelectedDifficulty = 1;
+
+	UPROPERTY(BlueprintReadWrite)
+	FString SelectedTeam;
+
+	UFUNCTION()
+	void SetNextStepButtonEnable();
+
 	UFUNCTION()
 	void UpdateAttire(UAttire* AddingAttire);
 

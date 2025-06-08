@@ -14,6 +14,11 @@ int32 PreviousIndex = 0;
 
 
 
+void UMainInterface::SetNextStepButtonEnable()
+{
+	NextStepButton->SetIsEnabled(true);
+}
+
 void UMainInterface::UpdateAttire(UAttire* AddingAttire)
 {
 	if (UI_CollectionInterface) {
@@ -54,6 +59,9 @@ void UMainInterface::NextStepButtonClicked()
 		int32 CurrentIndex = WidgetSwitcher->GetActiveWidgetIndex();
 		if (CurrentIndex < 2)// 2为允许使用下一步按钮的界面个数
 		{
+			if (CurrentIndex == 0) {
+				NextStepButton->SetIsEnabled(false);
+			}
 			WidgetSwitcher->SetActiveWidgetIndex(CurrentIndex + 1);
 			
 		}
