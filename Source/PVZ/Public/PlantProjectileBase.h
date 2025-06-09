@@ -29,6 +29,9 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	bool bIsDamage;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UBoxComponent* BoxComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)

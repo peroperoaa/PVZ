@@ -12,5 +12,8 @@ struct PVZ_API FProjectileState : public FTableRowBase
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FName ProjectileName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float BaseDamage;
 };

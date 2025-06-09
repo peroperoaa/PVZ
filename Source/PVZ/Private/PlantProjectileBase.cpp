@@ -25,6 +25,7 @@ APlantProjectileBase::APlantProjectileBase()
 	SpriteComponent->SetupAttachment(BoxComponent);
 	Damage = 0.f;
 	ProjectileID = 0;
+	bIsDamage = false;
 }
 
 // Called when the game starts or when spawned
@@ -46,7 +47,17 @@ void APlantProjectileBase::BeginOverlap(UPrimitiveComponent* OverlappedComponent
 	AZombieBase* Zombie = Cast<AZombieBase>(OtherActor);
 	if (!Zombie)
 		return;
+	BoxComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	SpriteComponent->SetVisibility(false);
+	if (bIsDamage)
+		return;
+	bIsDamage = true;
 	float OutDamage = Damage;
+	if(GetWorld() == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("APlantProjectileBase::BeginOverlap: GetWorld() is null!"));
+		return;
+	}
 	AGameModeBase* GameModeBase = UGameplayStatics::GetGameMode(GetWorld());
 	if (GameModeBase)
 	{
@@ -59,8 +70,6 @@ void APlantProjectileBase::BeginOverlap(UPrimitiveComponent* OverlappedComponent
 		}
 	}
 	Zombie->BeAttacked(OutDamage);
-	BoxComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	SpriteComponent->SetVisibility(false);
 	Destroy();
 }
 

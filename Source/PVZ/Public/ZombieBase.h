@@ -22,6 +22,8 @@ public:
 
 	AZombieBase();
 
+	virtual void BeginPlay() override;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Logic")
 	UZombieBuffComponent* BuffComponent;
 

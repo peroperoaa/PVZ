@@ -13,6 +13,9 @@ struct PVZ_API FPlantState : public FTableRowBase
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FName PlantName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float BaseMaxHealth;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

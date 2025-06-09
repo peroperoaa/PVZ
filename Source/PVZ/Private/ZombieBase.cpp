@@ -14,10 +14,16 @@ AZombieBase::AZombieBase()
 	PrimaryActorTick.bCanEverTick = true;
 	HealthComponent = CreateDefaultSubobject<UPlantHealthBaseComponent>(TEXT("HealthComponent"));
 	StateComponent = CreateDefaultSubobject<UZombieStateComponent>(TEXT("StateComponent"));
+	BuffComponent = nullptr;
+	ZombieID = 0;
+}
+
+void AZombieBase::BeginPlay()
+{
+	Super::BeginPlay();
 	AGameModeBase* GameMode = UGameplayStatics::GetGameMode(GetWorld());
 	ANodeGameMode* NodeGameMode = Cast<ANodeGameMode>(GameMode);
 	BuffComponent = NodeGameMode ? NodeGameMode->ZombieBuffComponent : nullptr;
-	ZombieID = 0;
 }
 
 bool AZombieBase::Init()
@@ -46,9 +52,9 @@ bool AZombieBase::Init()
 void AZombieBase::BeAttacked(float Damage)
 {
 	float FinalDamage = Damage;
-	if (!BuffComponent || !StateComponent)
+	if (!BuffComponent)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("AZombieBase::CalculateReceiveDamage : BuffComponent or StateComponent is null"))
+		UE_LOG(LogTemp, Warning, TEXT("AZombieBase::BeAttacked : BuffComponent is null"))
 	}
 	else
 		FinalDamage = BuffComponent->CalculateReceiveDamage(Damage);
@@ -57,6 +63,7 @@ void AZombieBase::BeAttacked(float Damage)
 		UE_LOG(LogTemp, Warning, TEXT("AZombieBase::BeAttacked : HealthComponent is null"));
 		return;
 	}
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, FString::Printf(TEXT("Zombie Instance Name: %s"), *GetName()));
 	HealthComponent->BeAttacked(FinalDamage);
 }
 
@@ -66,9 +73,9 @@ void AZombieBase::Dead()
 
 float AZombieBase::CalculateOutgoingDamage(float Damage)
 {
-	if (!BuffComponent || !StateComponent)
+	if (!BuffComponent)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("AZombieBase::CalculateOutgoingDamage : BuffComponent or StateComponent is null"));
+		UE_LOG(LogTemp, Warning, TEXT("AZombieBase::CalculateOutgoingDamage : BuffComponent is null"));
 		return Damage;
 	}
 	return BuffComponent->CalculateOutgoingDamage(Damage);

@@ -5,16 +5,52 @@
 #include "BuffComponent.h"
 #include "ZombieBuffComponent.h"
 
+void ANodeGameMode::SetSunlight(int32 NewAmount)
+{
+	OnSunlightChangedDelegate.Broadcast(NewAmount);
+}
+
 ANodeGameMode::ANodeGameMode()
 {
 	PlantBuffComponent = CreateDefaultSubobject<UBuffComponent>(TEXT("PlantBuffComponent"));//TEMP
 	ZombieBuffComponent = CreateDefaultSubobject<UZombieBuffComponent>(TEXT("ZombieBuffComponent"));//TEMP
+	CurrentSunlight = 0.f;
+}
+
+void ANodeGameMode::BeginPlay()
+{
+	Super::BeginPlay();
 }
 
 void ANodeGameMode::Init(UBuffComponent* PlantComponent, UZombieBuffComponent* ZombieComponent)
 {
 	PlantBuffComponent = PlantComponent;
 	ZombieBuffComponent = ZombieComponent;
+}
+
+int32 ANodeGameMode::GetCurrentSunlight() const
+{
+	return  CurrentSunlight;
+}
+
+void ANodeGameMode::AddSunlight(int32 Amount)
+{
+	CurrentSunlight += Amount;
+	SetSunlight(CurrentSunlight);
+}
+
+bool ANodeGameMode::ConsumeSunlight(int32 AmountToConsume)
+{
+	if(CurrentSunlight >= AmountToConsume)
+	{
+		CurrentSunlight -= AmountToConsume;
+		SetSunlight(CurrentSunlight);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 //float ANodeGameMode::CalculatePlantDamageOutput(float InDamage)

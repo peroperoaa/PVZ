@@ -10,9 +10,13 @@
  * 
  */
 USTRUCT()
+
 struct PVZ_API FZombieState : public FTableRowBase
 {
 	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FName ZombieName;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float BaseMaxHealth;

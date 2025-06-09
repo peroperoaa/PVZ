@@ -54,7 +54,7 @@ void UPlantHealthBaseComponent::BeAttacked(float FinalDamage)
 		return;
 	}
 	CurrentHealth -= FinalDamage;
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("CurrentHealth: %f"), CurrentHealth));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("CurrentHealth: %f"), CurrentHealth));
 	if (CurrentHealth <= 0)
 	{
 		AActor* Owner = GetOwner();
