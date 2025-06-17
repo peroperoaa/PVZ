@@ -58,7 +58,10 @@ void UNodeDetailsWidget::SetNode(AMapNode* InNode)
                 Description = TEXT("商店\n购买道具和升级");
                 break;
             case ERoguelikeNodeTypes::Wish:
-                Description = TEXT("得偿所愿\n获得收藏品或植物");
+                Description = TEXT("得偿所愿\n获得奖励");
+                break;
+            case ERoguelikeNodeTypes::Boss:
+                Description = TEXT("Boss战\n挑战强大的敌人");
                 break;
             default:
                 Description = TEXT("未知节点类型");

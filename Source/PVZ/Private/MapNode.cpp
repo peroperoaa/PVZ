@@ -72,7 +72,7 @@ void AMapNode::Tick(float DeltaTime)
 	// 设置进入的节点为已访问
  	VisitNode(this);
      
- 	// 查找地图管理器
+ 	// 获取地图管理器
  	ARoguelikeMapManager* MapManager = nullptr;
  	TArray<AActor*> FoundActors;
  	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ARoguelikeMapManager::StaticClass(), FoundActors);
@@ -101,12 +101,12 @@ void AMapNode::Tick(float DeltaTime)
 		}
 	}
 	
-	// 2. 禁用当前层中所有不可达节点
-	// 2.1.获取当前层的所有可达节点
+	// 3. 禁用当前层中所有不可达节点
+	// 3.1.获取当前层的所有可达节点
 	TArray<AMapNode*> AccessibleNodes;
 	CollectAccessibleNodesInLayer(MapManager, AccessibleNodes);
 
-	// 2.2禁用当前层中所有不可达节点
+	// 3.2禁用当前层中所有不可达节点
 	DisableInaccessibleNodesInLayer(MapManager, AccessibleNodes);
 	
  	// 更新连接的可视状态

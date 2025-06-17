@@ -12,11 +12,11 @@ UENUM(BlueprintType, meta=(ScriptName="RoguelikeSquadType"))
 enum class EERoguelikeSquadType : uint8
 {
 	//基础分队类型
-	Squad_Default UMETA(DisplayName = "默认分队"),
-	//等待构思
-	Squad_A UMETA(DisplayName = "A分队"),
-	Squad_B UMETA(DisplayName = "B分队"),
-	Squad_C UMETA(DisplayName = "C分队"),
+	Squad_Default UMETA(DisplayName = "初始分队"),// 无效果
+	
+	Squad_Command UMETA(DisplayName = "指挥分队"),// 初始生命+3
+	Squad_Colony UMETA(DisplayName = "集群分队"),// 初始携带位+2
+	Squad_Logistics UMETA(DisplayName = "后勤分队"),// 初始金钱+10
 };
 
 class PVZ_API ERoguelikeSquadType

@@ -4,12 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "UObject/ObjectMacros.h"
-#include "RogueLikeStateEnum.generated.h"
+#include "RoguelikeStateEnum.generated.h"
 /**
  * 
  */
-UENUM(BlueprintType, meta = (ScriptName = "RogueLikeStateEnum"))
-enum class ERogueLikeStateEnum : uint8
+UENUM(BlueprintType, meta = (ScriptName = "RoguelikeStateEnum"))
+enum class ERoguelikeStateEnum : uint8
 {
 	//生命值
 	Health UMETA(DisplayName = "Health"),
@@ -22,9 +22,9 @@ enum class ERogueLikeStateEnum : uint8
 	//携带上限
 	CarryingLimit UMETA(DisplayName = "CarryingLimit"),
 };
-class PVZ_API RogueLikeStateEnum
+class PVZ_API RoguelikeStateEnum
 {
 public:
-	RogueLikeStateEnum();
-	~RogueLikeStateEnum();
+	RoguelikeStateEnum();
+	~RoguelikeStateEnum();
 };

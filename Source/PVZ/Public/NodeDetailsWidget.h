@@ -30,9 +30,6 @@ public:
 	class UTextBlock* NodeDescriptionText;
     
 	UPROPERTY(meta = (BindWidget))
-	class UImage* NodeTypeIcon;
-    
-	UPROPERTY(meta = (BindWidget))
 	class UButton* ConfirmButton;
 
 	UPROPERTY(meta = (BindWidget))

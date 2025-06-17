@@ -1,5 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
+// RoguelikeGameMode.h
 #pragma once
 
 #include "CoreMinimal.h"
@@ -9,11 +8,9 @@
 #include "Kismet/GameplayStatics.h"
 #include "RoguelikeGameMode.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class PVZ_API ARoguelikeGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
+	
 };

@@ -1,12 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "RogueLikeStateEnum.h"
+#include "RoguelikeStateEnum.h"
 
-RogueLikeStateEnum::RogueLikeStateEnum()
+RoguelikeStateEnum::RoguelikeStateEnum()
 {
 }
 
-RogueLikeStateEnum::~RogueLikeStateEnum()
+RoguelikeStateEnum::~RoguelikeStateEnum()
 {
 }
